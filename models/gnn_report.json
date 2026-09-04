@@ -1,0 +1,18 @@
+{
+  "generated_at": "2026-08-26T08:39:40.013358+00:00",
+  "architecture": "2-layer GCN (from scratch, NumPy) \u2014 message passing over the shared-infrastructure graph",
+  "split": "identities disjoint by first-claim timestamp (same windows as XGBoost)",
+  "n_identities": 11471,
+  "n_train": 8551,
+  "n_val": 1498,
+  "n_test": 1422,
+  "graph_edges": 1704,
+  "pr_auc": 1.0,
+  "roc_auc": 1.0,
+  "xgb_pr_auc": 0.9999999999999999,
+  "lift_vs_xgb": 0.0,
+  "epochs_trained": 72,
+  "best_val_pr_auc": 1.0,
+  "train_seconds": 5.99,
+  "params": 193
+}

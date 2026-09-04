@@ -1,0 +1,408 @@
+[
+  {
+    "packet_id": "EVD-CLM_3489068",
+    "created_at": "2026-09-04T08:36:01.909323+00:00",
+    "disclaimer": "SIMULATED DEMO LINKAGE \u2014 for pipeline demonstration only, not a real matched transaction. IEEE-CIS amounts are denominated in USD, while Olist commercial order amounts are in Brazilian Real (BRL). An approximate historical FX conversion rate of 1 USD = 3.50 BRL (2016-2018 period average) was applied purely to make demo amount-matching meaningful. This linkage is a SIMULATED_DEMO (no real shared transaction identity between datasets), now currency-normalized for a fair comparison. This is an approximation for demonstration purposes and does not claim currency-exact precision; production systems would require contemporaneous daily FX rates or native same-currency data sources.",
+    "linkage_type": "SIMULATED_DEMO",
+    "dispute_summary": {
+      "claim_id": "CLM_3489068",
+      "ieee_transaction_id": 3489068,
+      "disputed_amount_original": {
+        "value": 150.0,
+        "currency": "USD"
+      },
+      "disputed_amount_converted": {
+        "value": 525.0,
+        "currency": "BRL",
+        "fx_rate_used": 3.5,
+        "fx_rate_period": "2016-2018 historical average approximation (~3.2-3.8 BRL per USD; Banco Central do Brasil / FRED series)"
+      },
+      "product_category_code": "H",
+      "card_network": "visa",
+      "card_type": "debit",
+      "ground_truth_label": 1
+    },
+    "model_risk_assessment": {
+      "model_architecture": "XGBoost Classifier with Causal Velocity (IEEE-CIS trained)",
+      "fraud_risk_score": 0.97242,
+      "risk_band": "HIGH_RISK",
+      "operating_threshold": 0.7,
+      "decision": "FLAGGED_FOR_CHARGEBACK_DEFENSE",
+      "top_contributing_signals": [
+        {
+          "feature": "card_address_count_C1",
+          "shap_contribution": 1.7998,
+          "risk_direction": "INCREASES_RISK"
+        },
+        {
+          "feature": "transaction_count_C2",
+          "shap_contribution": 1.0949,
+          "risk_direction": "INCREASES_RISK"
+        },
+        {
+          "feature": "email_count_C13",
+          "shap_contribution": 0.748,
+          "risk_direction": "INCREASES_RISK"
+        },
+        {
+          "feature": "amt_log",
+          "shap_contribution": 0.6015,
+          "risk_direction": "INCREASES_RISK"
+        }
+      ]
+    },
+    "commercial_fulfillment_evidence": {
+      "source_dataset": "Olist Brazilian E-Commerce (Real commercial logistics)",
+      "matched_order_id": "74eba88c228b81196e604cffff7b4fe0",
+      "matched_order_value_brl": 455.82,
+      "target_converted_amount_brl": 525.0,
+      "amount_match_delta_pct": 13.18,
+      "within_target_tolerance": true,
+      "currency_normalization_note": "Disputed USD 150.00 converted to BRL 525.00 @ 3.5 BRL/USD prior to Olist order matching.",
+      "order_status": "delivered",
+      "timeline": {
+        "purchase_timestamp": "2017-06-27T21:33:36",
+        "approved_timestamp": "2017-06-27T21:45:17",
+        "carrier_dispatched_timestamp": "2017-07-04T13:46:15",
+        "delivered_customer_timestamp": "2017-07-17T20:06:20",
+        "estimated_delivery_timestamp": "2017-07-28T00:00:00"
+      },
+      "delivery_performance": {
+        "status": "DELIVERED_ON_TIME",
+        "delivery_delta_days": -10.2,
+        "transit_duration_days": 19.9,
+        "delivery_proof_available": true
+      },
+      "customer_feedback_record": {
+        "review_score": 5,
+        "review_comment_title": null,
+        "review_comment_message": null,
+        "has_written_feedback": false
+      },
+      "merchant_and_item_details": {
+        "seller_id": "66e0557ecc2b4dbea057e93f215f68d8",
+        "seller_location": "sao paulo, SP",
+        "customer_location": "porto alegre, RS",
+        "product_category": "consoles_games",
+        "item_count": 1
+      },
+      "payment_profile": {
+        "payment_type": "credit_card",
+        "installments": 7
+      }
+    },
+    "dispute_defense_evaluation": {
+      "compelling_evidence_factors": [
+        "Carrier records confirm order delivered to customer on 2017-07-17 (10.2 days before estimated deadline)",
+        "Customer recorded a positive 5-star review following delivery"
+      ],
+      "dispute_representment_recommendation": "CONTEST_CHARGEBACK_WITH_EVIDENCE",
+      "chargeback_reason_classification": "FIRST_PARTY_FRIENDLY_FRAUD"
+    },
+    "narrative": ""
+  },
+  {
+    "packet_id": "EVD-CLM_3490159",
+    "created_at": "2026-09-04T08:36:01.909323+00:00",
+    "disclaimer": "SIMULATED DEMO LINKAGE \u2014 for pipeline demonstration only, not a real matched transaction. IEEE-CIS amounts are denominated in USD, while Olist commercial order amounts are in Brazilian Real (BRL). An approximate historical FX conversion rate of 1 USD = 3.50 BRL (2016-2018 period average) was applied purely to make demo amount-matching meaningful. This linkage is a SIMULATED_DEMO (no real shared transaction identity between datasets), now currency-normalized for a fair comparison. This is an approximation for demonstration purposes and does not claim currency-exact precision; production systems would require contemporaneous daily FX rates or native same-currency data sources.",
+    "linkage_type": "SIMULATED_DEMO",
+    "dispute_summary": {
+      "claim_id": "CLM_3490159",
+      "ieee_transaction_id": 3490159,
+      "disputed_amount_original": {
+        "value": 77.0,
+        "currency": "USD"
+      },
+      "disputed_amount_converted": {
+        "value": 269.5,
+        "currency": "BRL",
+        "fx_rate_used": 3.5,
+        "fx_rate_period": "2016-2018 historical average approximation (~3.2-3.8 BRL per USD; Banco Central do Brasil / FRED series)"
+      },
+      "product_category_code": "W",
+      "card_network": "visa",
+      "card_type": "debit",
+      "ground_truth_label": 0
+    },
+    "model_risk_assessment": {
+      "model_architecture": "XGBoost Classifier with Causal Velocity (IEEE-CIS trained)",
+      "fraud_risk_score": 0.798595,
+      "risk_band": "HIGH_RISK",
+      "operating_threshold": 0.7,
+      "decision": "FLAGGED_FOR_CHARGEBACK_DEFENSE",
+      "top_contributing_signals": [
+        {
+          "feature": "transaction_count_C2",
+          "shap_contribution": 0.8919,
+          "risk_direction": "INCREASES_RISK"
+        },
+        {
+          "feature": "time_delta_prev_txn_D2",
+          "shap_contribution": 0.7119,
+          "risk_direction": "INCREASES_RISK"
+        },
+        {
+          "feature": "email_count_C13",
+          "shap_contribution": 0.5177,
+          "risk_direction": "INCREASES_RISK"
+        },
+        {
+          "feature": "time_delta_card_creation_D1",
+          "shap_contribution": 0.3231,
+          "risk_direction": "INCREASES_RISK"
+        }
+      ]
+    },
+    "commercial_fulfillment_evidence": {
+      "source_dataset": "Olist Brazilian E-Commerce (Real commercial logistics)",
+      "matched_order_id": "e1b0640460ef6ca7edd7c0039805e515",
+      "matched_order_value_brl": 293.42,
+      "target_converted_amount_brl": 269.5,
+      "amount_match_delta_pct": 8.88,
+      "within_target_tolerance": true,
+      "currency_normalization_note": "Disputed USD 77.00 converted to BRL 269.50 @ 3.5 BRL/USD prior to Olist order matching.",
+      "order_status": "delivered",
+      "timeline": {
+        "purchase_timestamp": "2018-03-12T20:59:48",
+        "approved_timestamp": "2018-03-12T21:10:34",
+        "carrier_dispatched_timestamp": "2018-03-13T21:59:52",
+        "delivered_customer_timestamp": "2018-04-16T13:31:30",
+        "estimated_delivery_timestamp": "2018-03-29T00:00:00"
+      },
+      "delivery_performance": {
+        "status": "DELIVERED_LATE",
+        "delivery_delta_days": 18.6,
+        "transit_duration_days": 34.7,
+        "delivery_proof_available": true
+      },
+      "customer_feedback_record": {
+        "review_score": 1,
+        "review_comment_title": null,
+        "review_comment_message": null,
+        "has_written_feedback": false
+      },
+      "merchant_and_item_details": {
+        "seller_id": "2528513dd95219a6013d4d05176e391a",
+        "seller_location": "osasco, SP",
+        "customer_location": "niteroi, RJ",
+        "product_category": "home_confort",
+        "item_count": 1
+      },
+      "payment_profile": {
+        "payment_type": "credit_card",
+        "installments": 5
+      }
+    },
+    "dispute_defense_evaluation": {
+      "compelling_evidence_factors": [
+        "Carrier records indicate delivery was delayed by 18.6 days past target estimate"
+      ],
+      "dispute_representment_recommendation": "REVIEW_SHIPPING_SLA_BEFORE_REPRESENTMENT",
+      "chargeback_reason_classification": "LATE_DELIVERY_DISPUTE"
+    },
+    "narrative": ""
+  },
+  {
+    "packet_id": "EVD-CLM_3491784",
+    "created_at": "2026-09-04T08:36:01.909323+00:00",
+    "disclaimer": "SIMULATED DEMO LINKAGE \u2014 for pipeline demonstration only, not a real matched transaction. IEEE-CIS amounts are denominated in USD, while Olist commercial order amounts are in Brazilian Real (BRL). An approximate historical FX conversion rate of 1 USD = 3.50 BRL (2016-2018 period average) was applied purely to make demo amount-matching meaningful. This linkage is a SIMULATED_DEMO (no real shared transaction identity between datasets), now currency-normalized for a fair comparison. This is an approximation for demonstration purposes and does not claim currency-exact precision; production systems would require contemporaneous daily FX rates or native same-currency data sources.",
+    "linkage_type": "SIMULATED_DEMO",
+    "dispute_summary": {
+      "claim_id": "CLM_3491784",
+      "ieee_transaction_id": 3491784,
+      "disputed_amount_original": {
+        "value": 994.0,
+        "currency": "USD"
+      },
+      "disputed_amount_converted": {
+        "value": 3479.0,
+        "currency": "BRL",
+        "fx_rate_used": 3.5,
+        "fx_rate_period": "2016-2018 historical average approximation (~3.2-3.8 BRL per USD; Banco Central do Brasil / FRED series)"
+      },
+      "product_category_code": "W",
+      "card_network": "mastercard",
+      "card_type": "debit",
+      "ground_truth_label": 0
+    },
+    "model_risk_assessment": {
+      "model_architecture": "XGBoost Classifier with Causal Velocity (IEEE-CIS trained)",
+      "fraud_risk_score": 0.701003,
+      "risk_band": "HIGH_RISK",
+      "operating_threshold": 0.7,
+      "decision": "FLAGGED_FOR_CHARGEBACK_DEFENSE",
+      "top_contributing_signals": [
+        {
+          "feature": "amt_log",
+          "shap_contribution": 2.0283,
+          "risk_direction": "INCREASES_RISK"
+        },
+        {
+          "feature": "time_delta_prev_txn_D2",
+          "shap_contribution": 0.709,
+          "risk_direction": "INCREASES_RISK"
+        },
+        {
+          "feature": "time_delta_card_creation_D1",
+          "shap_contribution": 0.3873,
+          "risk_direction": "INCREASES_RISK"
+        },
+        {
+          "feature": "email_domain_txn_count_24h",
+          "shap_contribution": -0.3073,
+          "risk_direction": "DECREASES_RISK"
+        }
+      ]
+    },
+    "commercial_fulfillment_evidence": {
+      "source_dataset": "Olist Brazilian E-Commerce (Real commercial logistics)",
+      "matched_order_id": "03310aa823a66056268a3bab36e827fb",
+      "matched_order_value_brl": 3184.34,
+      "target_converted_amount_brl": 3479.0,
+      "amount_match_delta_pct": 8.47,
+      "within_target_tolerance": true,
+      "currency_normalization_note": "Disputed USD 994.00 converted to BRL 3479.00 @ 3.5 BRL/USD prior to Olist order matching.",
+      "order_status": "canceled",
+      "timeline": {
+        "purchase_timestamp": "2018-08-07T16:33:59",
+        "approved_timestamp": null,
+        "carrier_dispatched_timestamp": null,
+        "delivered_customer_timestamp": null,
+        "estimated_delivery_timestamp": "2018-09-04T00:00:00"
+      },
+      "delivery_performance": {
+        "status": "CANCELED_OR_UNAVAILABLE",
+        "delivery_delta_days": null,
+        "transit_duration_days": null,
+        "delivery_proof_available": false
+      },
+      "customer_feedback_record": {
+        "review_score": 1,
+        "review_comment_title": "Produto errado",
+        "review_comment_message": "Entrega do produto diferente do solicitado\r\nAguardo orienta\u00e7\u00e3o para a troca",
+        "has_written_feedback": true
+      },
+      "merchant_and_item_details": {
+        "seller_id": "nan",
+        "seller_location": "nan, nan",
+        "customer_location": "florianopolis, SC",
+        "product_category": "nan",
+        "item_count": 1
+      },
+      "payment_profile": {
+        "payment_type": "voucher",
+        "installments": 1
+      }
+    },
+    "dispute_defense_evaluation": {
+      "compelling_evidence_factors": [
+        "Order was canceled or marked unfulfilled prior to carrier completion"
+      ],
+      "dispute_representment_recommendation": "ACCEPT_CHARGEBACK_OR_ISSUE_REFUND",
+      "chargeback_reason_classification": "UNFULFILLED_MERCHANDISE"
+    },
+    "narrative": ""
+  },
+  {
+    "packet_id": "EVD-CLM_3490660",
+    "created_at": "2026-09-04T08:36:01.909323+00:00",
+    "disclaimer": "SIMULATED DEMO LINKAGE \u2014 for pipeline demonstration only, not a real matched transaction. IEEE-CIS amounts are denominated in USD, while Olist commercial order amounts are in Brazilian Real (BRL). An approximate historical FX conversion rate of 1 USD = 3.50 BRL (2016-2018 period average) was applied purely to make demo amount-matching meaningful. This linkage is a SIMULATED_DEMO (no real shared transaction identity between datasets), now currency-normalized for a fair comparison. This is an approximation for demonstration purposes and does not claim currency-exact precision; production systems would require contemporaneous daily FX rates or native same-currency data sources.",
+    "linkage_type": "SIMULATED_DEMO",
+    "dispute_summary": {
+      "claim_id": "CLM_3490660",
+      "ieee_transaction_id": 3490660,
+      "disputed_amount_original": {
+        "value": 100.0,
+        "currency": "USD"
+      },
+      "disputed_amount_converted": {
+        "value": 350.0,
+        "currency": "BRL",
+        "fx_rate_used": 3.5,
+        "fx_rate_period": "2016-2018 historical average approximation (~3.2-3.8 BRL per USD; Banco Central do Brasil / FRED series)"
+      },
+      "product_category_code": "R",
+      "card_network": "visa",
+      "card_type": "credit",
+      "ground_truth_label": 1
+    },
+    "model_risk_assessment": {
+      "model_architecture": "XGBoost Classifier with Causal Velocity (IEEE-CIS trained)",
+      "fraud_risk_score": 0.947577,
+      "risk_band": "HIGH_RISK",
+      "operating_threshold": 0.7,
+      "decision": "FLAGGED_FOR_CHARGEBACK_DEFENSE",
+      "top_contributing_signals": [
+        {
+          "feature": "email_count_C13",
+          "shap_contribution": 2.3345,
+          "risk_direction": "INCREASES_RISK"
+        },
+        {
+          "feature": "card_address_count_C1",
+          "shap_contribution": 1.6591,
+          "risk_direction": "INCREASES_RISK"
+        },
+        {
+          "feature": "transaction_count_C2",
+          "shap_contribution": 0.9747,
+          "risk_direction": "INCREASES_RISK"
+        },
+        {
+          "feature": "ProductCD_train_fraud_rate",
+          "shap_contribution": -0.3368,
+          "risk_direction": "DECREASES_RISK"
+        }
+      ]
+    },
+    "commercial_fulfillment_evidence": {
+      "source_dataset": "Olist Brazilian E-Commerce (Real commercial logistics)",
+      "matched_order_id": "06c5eb90406de0ba873e721e9182ecfd",
+      "matched_order_value_brl": 342.07,
+      "target_converted_amount_brl": 350.0,
+      "amount_match_delta_pct": 2.27,
+      "within_target_tolerance": true,
+      "currency_normalization_note": "Disputed USD 100.00 converted to BRL 350.00 @ 3.5 BRL/USD prior to Olist order matching.",
+      "order_status": "delivered",
+      "timeline": {
+        "purchase_timestamp": "2018-06-12T08:46:10",
+        "approved_timestamp": "2018-06-12T09:18:06",
+        "carrier_dispatched_timestamp": "2018-06-13T16:28:00",
+        "delivered_customer_timestamp": "2018-06-19T18:12:27",
+        "estimated_delivery_timestamp": "2018-07-04T00:00:00"
+      },
+      "delivery_performance": {
+        "status": "DELIVERED_ON_TIME",
+        "delivery_delta_days": -14.2,
+        "transit_duration_days": 7.4,
+        "delivery_proof_available": true
+      },
+      "customer_feedback_record": {
+        "review_score": 5,
+        "review_comment_title": "Super recomendo",
+        "review_comment_message": "O produto \u00e9 de alt\u00edssima qualidade, mas o tom \u00e9 diferente, na parte bege \u00e9 mais para um p\u00e9rola.",
+        "has_written_feedback": true
+      },
+      "merchant_and_item_details": {
+        "seller_id": "7ad32824caee82087b3e2e5f33b1bf32",
+        "seller_location": "ibitinga, SP",
+        "customer_location": "londrina, PR",
+        "product_category": "bed_bath_table",
+        "item_count": 1
+      },
+      "payment_profile": {
+        "payment_type": "credit_card",
+        "installments": 8
+      }
+    },
+    "dispute_defense_evaluation": {
+      "compelling_evidence_factors": [
+        "Carrier records confirm order delivered to customer on 2018-06-19 (14.2 days before estimated deadline)",
+        "Customer recorded a positive 5-star review following delivery"
+      ],
+      "dispute_representment_recommendation": "CONTEST_CHARGEBACK_WITH_EVIDENCE",
+      "chargeback_reason_classification": "FIRST_PARTY_FRIENDLY_FRAUD"
+    },
+    "narrative": ""
+  }
+]

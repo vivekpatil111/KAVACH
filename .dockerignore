@@ -1,0 +1,19 @@
+venv/
+data/
+docs/
+tests/
+eval/
+.git/
+.github/
+__pycache__/
+*.py[cod]
+*.log
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.env
+
+# ship only the legacy static report
+dashboard/*
+!dashboard/index.html
+!dashboard/vendor/

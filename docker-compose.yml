@@ -1,0 +1,70 @@
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - RING_SENTINEL_MODEL=models/ring_sentinel_xgb.json
+      - RING_SENTINEL_HIGH=${RING_SENTINEL_HIGH:-0.85}
+      - RING_SENTINEL_MEDIUM=${RING_SENTINEL_MEDIUM:-0.50}
+      - RING_SENTINEL_API_KEYS=${RING_SENTINEL_API_KEYS:-dev-insecure-key-change-me}
+      - RING_SENTINEL_SNAPSHOT=/app/data/graph_state_snapshot.json
+      - RING_SENTINEL_AUDIT_DB=/app/data/decisions.db
+    volumes:
+      - appdata:/app/data
+    mem_limit: 1g
+    cpus: 1.5
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+
+  streamlit:
+    build: 
+      context: .
+      dockerfile: Dockerfile.streamlit
+    ports:
+      - "8501:8501"
+    environment:
+      - RING_SENTINEL_API_URL=http://api:8000
+      - RING_SENTINEL_API_KEY=${RING_SENTINEL_API_KEYS:-dev-insecure-key-change-me}
+    depends_on:
+      - api
+    restart: unless-stopped
+
+  # Durable stores for the production architecture. The MVP's hot graph state
+  # is in-memory inside the API process with disk snapshots (documented upgrade
+  # path: move GraphState adjacency + claim history into Redis, decisions into
+  # Postgres). Provisioned here so that migration is config, not infra.
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-ring_sentinel}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+      POSTGRES_DB: ${POSTGRES_DB:-ring_sentinel}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-ring_sentinel}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+volumes:
+  pgdata:
+  appdata:

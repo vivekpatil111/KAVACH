@@ -1,0 +1,250 @@
+{
+  "generated_at": "2026-09-04T08:14:59.964139+00:00",
+  "dataset": "IEEE-CIS Fraud Detection (Real anonymized Vesta/IEEE-CIS transactions)",
+  "split_type": "Temporal (70% train, 15% validation, 15% test by TransactionDT)",
+  "splits": {
+    "train": {
+      "name": "Train (70%)",
+      "rows": 413378,
+      "fraction": 0.7,
+      "fraud_count": 14538,
+      "fraud_rate": 0.03516878014795175,
+      "dt_min": 86400,
+      "dt_max": 10437996,
+      "day_min": 1.0,
+      "day_max": 120.81
+    },
+    "validation": {
+      "name": "Validation (15%)",
+      "rows": 88581,
+      "fraction": 0.15,
+      "fraud_count": 3042,
+      "fraud_rate": 0.03434145019812375,
+      "dt_min": 10438003,
+      "dt_max": 13151840,
+      "day_min": 120.81,
+      "day_max": 152.22
+    },
+    "test": {
+      "name": "Held-Out Test (15%)",
+      "rows": 88581,
+      "fraction": 0.15,
+      "fraud_count": 3083,
+      "fraud_rate": 0.03480430340592226,
+      "dt_min": 13151880,
+      "dt_max": 15811131,
+      "day_min": 152.22,
+      "day_max": 183.0
+    }
+  },
+  "held_out_metrics": {
+    "pr_auc": 0.45875,
+    "roc_auc": 0.875217,
+    "test_base_rate": 0.034804,
+    "recommended_threshold": 0.7,
+    "confusion_matrix": {
+      "true_negative": 84954,
+      "false_positive": 544,
+      "false_negative": 1969,
+      "true_positive": 1114
+    },
+    "threshold_sweep": [
+      {
+        "threshold": 0.5,
+        "precision": 0.4704,
+        "recall": 0.459,
+        "f1": 0.4646,
+        "flagged": 3008,
+        "tp": 1415,
+        "fp": 1593,
+        "fn": 1668,
+        "tn": 83905
+      },
+      {
+        "threshold": 0.7,
+        "precision": 0.6719,
+        "recall": 0.3613,
+        "f1": 0.4699,
+        "flagged": 1658,
+        "tp": 1114,
+        "fp": 544,
+        "fn": 1969,
+        "tn": 84954
+      },
+      {
+        "threshold": 0.85,
+        "precision": 0.789,
+        "recall": 0.2887,
+        "f1": 0.4227,
+        "flagged": 1128,
+        "tp": 890,
+        "fp": 238,
+        "fn": 2193,
+        "tn": 85260
+      },
+      {
+        "threshold": 0.9,
+        "precision": 0.833,
+        "recall": 0.2524,
+        "f1": 0.3874,
+        "flagged": 934,
+        "tp": 778,
+        "fp": 156,
+        "fn": 2305,
+        "tn": 85342
+      }
+    ]
+  },
+  "feature_dominance_check": {
+    "passed": true,
+    "top_feature": "has_billing_addr",
+    "top_feature_importance": 0.1486,
+    "threshold": 0.5
+  },
+  "feature_importances": [
+    {
+      "feature": "has_billing_addr",
+      "importance": 0.148611
+    },
+    {
+      "feature": "ProductCD_train_fraud_rate",
+      "importance": 0.144677
+    },
+    {
+      "feature": "amt_is_round_dollar",
+      "importance": 0.095435
+    },
+    {
+      "feature": "card_address_count_C1",
+      "importance": 0.067229
+    },
+    {
+      "feature": "has_identity_data",
+      "importance": 0.047247
+    },
+    {
+      "feature": "email_count_C13",
+      "importance": 0.045535
+    },
+    {
+      "feature": "has_recipient_email",
+      "importance": 0.042371
+    },
+    {
+      "feature": "addr_card_country_mismatch",
+      "importance": 0.038508
+    },
+    {
+      "feature": "is_mobile_device",
+      "importance": 0.031437
+    },
+    {
+      "feature": "time_delta_prev_txn_D2",
+      "importance": 0.03084
+    },
+    {
+      "feature": "amt_cents",
+      "importance": 0.028663
+    },
+    {
+      "feature": "transaction_count_C2",
+      "importance": 0.02622
+    },
+    {
+      "feature": "browser_is_known",
+      "importance": 0.019279
+    },
+    {
+      "feature": "avs_shipping_match",
+      "importance": 0.016488
+    },
+    {
+      "feature": "amt_log",
+      "importance": 0.016475
+    },
+    {
+      "feature": "is_desktop_device",
+      "importance": 0.016304
+    },
+    {
+      "feature": "os_is_known",
+      "importance": 0.015596
+    },
+    {
+      "feature": "time_delta_card_creation_D1",
+      "importance": 0.014991
+    },
+    {
+      "feature": "email_domain_mismatch",
+      "importance": 0.014193
+    },
+    {
+      "feature": "ip_proxy_risk_flag",
+      "importance": 0.013785
+    },
+    {
+      "feature": "card_txn_count_7d",
+      "importance": 0.010856
+    },
+    {
+      "feature": "avs_address_match",
+      "importance": 0.010039
+    },
+    {
+      "feature": "amt_to_card_mean_ratio",
+      "importance": 0.009887
+    },
+    {
+      "feature": "email_domain_txn_count_24h",
+      "importance": 0.009788
+    },
+    {
+      "feature": "shipping_billing_dist",
+      "importance": 0.009431
+    },
+    {
+      "feature": "total_verification_matches",
+      "importance": 0.00895
+    },
+    {
+      "feature": "card_txn_count_24h",
+      "importance": 0.008459
+    },
+    {
+      "feature": "has_device_info",
+      "importance": 0.008192
+    },
+    {
+      "feature": "card_txn_amt_sum_24h",
+      "importance": 0.008179
+    },
+    {
+      "feature": "card_time_since_last_txn_hours",
+      "importance": 0.007368
+    },
+    {
+      "feature": "hour_of_day",
+      "importance": 0.007223
+    },
+    {
+      "feature": "card_amt_zscore",
+      "importance": 0.007178
+    },
+    {
+      "feature": "avs_billing_match",
+      "importance": 0.006443
+    },
+    {
+      "feature": "day_of_week",
+      "importance": 0.004957
+    },
+    {
+      "feature": "is_night_transaction",
+      "importance": 0.004682
+    },
+    {
+      "feature": "has_shipping_dist",
+      "importance": 0.004485
+    }
+  ]
+}

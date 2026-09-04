@@ -1,0 +1,169 @@
+{
+  "correlation_coefficient": 0.2513214688446719,
+  "proxy_definition": "Order status is 'canceled' OR Review Score is 1.",
+  "top_10_categories": [
+    {
+      "category": "fashion_male_clothing",
+      "total_orders": 112,
+      "return_proxy_count": 26,
+      "avg_review_score": 3.7027027027027026,
+      "avg_delay_days": -12.725209206848357,
+      "return_proxy_rate": 0.23214285714285715
+    },
+    {
+      "category": "office_furniture",
+      "total_orders": 1265,
+      "return_proxy_count": 226,
+      "avg_review_score": 3.6207171314741036,
+      "avg_delay_days": -11.041525232596161,
+      "return_proxy_rate": 0.17865612648221343
+    },
+    {
+      "category": "construction_tools_safety",
+      "total_orders": 162,
+      "return_proxy_count": 28,
+      "avg_review_score": 3.888198757763975,
+      "avg_delay_days": -12.21492784992785,
+      "return_proxy_rate": 0.1728395061728395
+    },
+    {
+      "category": "audio",
+      "total_orders": 346,
+      "return_proxy_count": 57,
+      "avg_review_score": 3.8396501457725947,
+      "avg_delay_days": -9.333792124246338,
+      "return_proxy_rate": 0.16473988439306358
+    },
+    {
+      "category": "unknown",
+      "total_orders": 1437,
+      "return_proxy_count": 233,
+      "avg_review_score": 3.9214586255259465,
+      "avg_delay_days": -10.635918820217169,
+      "return_proxy_rate": 0.16214335421016005
+    },
+    {
+      "category": "dvds_blu_ray",
+      "total_orders": 59,
+      "return_proxy_count": 9,
+      "avg_review_score": 4.086206896551724,
+      "avg_delay_days": -12.456376281415345,
+      "return_proxy_rate": 0.15254237288135594
+    },
+    {
+      "category": "fixed_telephony",
+      "total_orders": 217,
+      "return_proxy_count": 33,
+      "avg_review_score": 3.9018691588785046,
+      "avg_delay_days": -14.24392754192872,
+      "return_proxy_rate": 0.15207373271889402
+    },
+    {
+      "category": "home_confort",
+      "total_orders": 375,
+      "return_proxy_count": 54,
+      "avg_review_score": 3.876675603217158,
+      "avg_delay_days": -9.163887575075075,
+      "return_proxy_rate": 0.144
+    },
+    {
+      "category": "air_conditioning",
+      "total_orders": 252,
+      "return_proxy_count": 33,
+      "avg_review_score": 4.040322580645161,
+      "avg_delay_days": -13.196921060090702,
+      "return_proxy_rate": 0.13095238095238096
+    },
+    {
+      "category": "computers_accessories",
+      "total_orders": 6660,
+      "return_proxy_count": 852,
+      "avg_review_score": 4.024320241691843,
+      "avg_delay_days": -11.659872423433049,
+      "return_proxy_rate": 0.12792792792792793
+    }
+  ],
+  "bottom_10_categories": [
+    {
+      "category": "food_drink",
+      "total_orders": 224,
+      "return_proxy_count": 11,
+      "avg_review_score": 4.381165919282512,
+      "avg_delay_days": -10.6564832866123,
+      "return_proxy_rate": 0.049107142857142856
+    },
+    {
+      "category": "tablets_printing_image",
+      "total_orders": 77,
+      "return_proxy_count": 4,
+      "avg_review_score": 4.173333333333333,
+      "avg_delay_days": -12.436779852092352,
+      "return_proxy_rate": 0.05194805194805195
+    },
+    {
+      "category": "construction_tools_lights",
+      "total_orders": 233,
+      "return_proxy_count": 15,
+      "avg_review_score": 4.1869565217391305,
+      "avg_delay_days": -10.596566408128908,
+      "return_proxy_rate": 0.06437768240343347
+    },
+    {
+      "category": "luggage_accessories",
+      "total_orders": 1023,
+      "return_proxy_count": 68,
+      "avg_review_score": 4.33954857703631,
+      "avg_delay_days": -11.858185017544825,
+      "return_proxy_rate": 0.06647116324535679
+    },
+    {
+      "category": "books_general_interest",
+      "total_orders": 509,
+      "return_proxy_count": 36,
+      "avg_review_score": 4.467326732673268,
+      "avg_delay_days": -11.201872788693164,
+      "return_proxy_rate": 0.07072691552062868
+    },
+    {
+      "category": "books_technical",
+      "total_orders": 259,
+      "return_proxy_count": 19,
+      "avg_review_score": 4.3984375,
+      "avg_delay_days": -10.609182734204794,
+      "return_proxy_rate": 0.07335907335907337
+    },
+    {
+      "category": "costruction_tools_tools",
+      "total_orders": 97,
+      "return_proxy_count": 8,
+      "avg_review_score": 4.425531914893617,
+      "avg_delay_days": -11.513747016991218,
+      "return_proxy_rate": 0.08247422680412371
+    },
+    {
+      "category": "stationery",
+      "total_orders": 2294,
+      "return_proxy_count": 195,
+      "avg_review_score": 4.253731343283582,
+      "avg_delay_days": -11.302978194176598,
+      "return_proxy_rate": 0.08500435919790758
+    },
+    {
+      "category": "industry_commerce_and_business",
+      "total_orders": 232,
+      "return_proxy_count": 20,
+      "avg_review_score": 4.2043478260869565,
+      "avg_delay_days": -11.529454292560104,
+      "return_proxy_rate": 0.08620689655172414
+    },
+    {
+      "category": "pet_shop",
+      "total_orders": 1704,
+      "return_proxy_count": 149,
+      "avg_review_score": 4.244247787610619,
+      "avg_delay_days": -11.650072885013433,
+      "return_proxy_rate": 0.08744131455399061
+    }
+  ],
+  "limitations": "This is a lightweight secondary angle using proxy signals. Olist has no explicit 'return' flag. This is not a full ML model."
+}
