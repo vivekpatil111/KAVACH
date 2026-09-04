@@ -67,7 +67,7 @@ In a real production payment gateway, this join would be deterministic: a single
    ROC-AUC: 0.8752  │  PR-AUC: 0.4588  │  Operating threshold: τ = 0.70
         │
         ▼
- FastAPI /v1/score (app.py) ◄── Real-time inference endpoint (<15ms P99 latency)
+ FastAPI /v1/score (app.py) ◄── Real-time inference endpoint (~5.14ms avg, p95 ~5.92ms)
         │
         ▼
  High-Risk Flags (τ ≥ 0.70: 1,658 transactions on held-out test)
@@ -244,7 +244,7 @@ Net Savings(τ) = TP(τ) × avg_chargeback_value
 
 - `avg_chargeback_value` = **$50.00** (configurable assumption; not derived from data)
 - `avg_llm_cost_per_narrative` = **$0.000134** (measured from actual Gemini 2.5 Flash batch run)
-- At τ = 0.70: `Net Savings = 1,114 × $50 − $63.05 − 1,658 × $0.000134` = **≈ $55,636.50 USD** in fraud prevented, net of all system costs
+- At τ = 0.70: `Net Savings = 1,114 × $50 − $63.05 − 1,658 × $0.000134` = **≈ $55,636.73 USD** in fraud prevented, net of all system costs
 
 The dashboard plots this curve across all thresholds with a configurable chargeback value slider.
 
@@ -387,6 +387,24 @@ python -m streamlit run chargeback_defense/dashboard.py --server.port 8502
 ```
 
 Open **http://localhost:8502** in your browser.
+
+---
+
+## 🛡️ Strictly Defense-Only (Buildathon Compliance)
+
+This system is **100% defense-only**. It does **not** generate, simulate, or dispatch any offensive payloads, red-team adversarial attacks, or external system manipulations.
+
+**What Kavach DOES:**
+- ✅ Scores incoming transactions for fraud risk.
+- ✅ Generates evidentiary dossiers (PDFs) for chargeback representment.
+- ✅ Recommends `CONTEST`, `REVIEW_SLA`, or `ACCEPT_REFUND` actions based on delivery proof.
+
+**What Kavach DOES NOT DO:**
+- ❌ Execute attacks against payment gateways.
+- ❌ Simulate fraud syndicates (Red-Team).
+- ❌ Manipulate or spoof external APIs.
+
+This architecture is intentionally constrained to satisfy the strict **"defense-only"** bar of the AI Risk Manager track. No code in this repository is capable of executing a live attack against any merchant, bank, or end-user.
 
 ---
 
