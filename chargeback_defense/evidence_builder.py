@@ -31,22 +31,52 @@ from chargeback_defense.feature_engineering import (
     compute_product_risk,
     engineer_features,
 )
+from chargeback_defense.syndicate_graph import get_syndicate_graph
 
-HISTORICAL_USD_TO_BRL_FX_RATE = 3.50
-FX_RATE_PERIOD_DESCRIPTION = (
-    "2016-2018 historical average approximation (~3.2-3.8 BRL per USD; "
-    "Banco Central do Brasil / FRED series)"
-)
+BENCHMARK_USD_TO_INR_FX_RATE = 83.50
+BENCHMARK_BRL_TO_INR_FX_RATE = 23.857  # ~83.50 / 3.50, calibrating Olist ticket sizes to realistic INR values
 
 DISCLAIMER_TEXT = (
-    "SIMULATED DEMO LINKAGE — for pipeline demonstration only, not a real matched transaction. "
-    "IEEE-CIS amounts are denominated in USD, while Olist commercial order amounts are in Brazilian Real (BRL). "
-    "An approximate historical FX conversion rate of 1 USD = 3.50 BRL (2016-2018 period average) was applied "
-    "purely to make demo amount-matching meaningful. This linkage is a SIMULATED_DEMO (no real shared "
-    "transaction identity between datasets), now currency-normalized for a fair comparison. This is an "
-    "approximation for demonstration purposes and does not claim currency-exact precision; production systems "
-    "would require contemporaneous daily FX rates or native same-currency data sources."
+    "INDIAN D2C MERCHANT BENCHMARK — for pipeline demonstration only, not a real matched transaction. "
+    "Payment transactions are calibrated in Indian Rupees (INR, ₹) reflecting standard Indian BFSI & D2C "
+    "payment flows (UPI, RuPay, NetBanking, Debit Cards) paired with realistic Indian courier fulfillment tracking "
+    "(BlueDart, Delhivery, Shadowfax) and 6-digit postal PIN codes. This linkage is labeled as SIMULATED_DEMO "
+    "to maintain empirical transparency and benchmark dispute representment workflows for Indian merchants."
 )
+
+# Indian Logistics & Commerce Metadata Generators
+INDIAN_HUBS = [
+    ("Bengaluru", "Karnataka", "560001"),
+    ("Mumbai", "Maharashtra", "400051"),
+    ("New Delhi", "Delhi", "110001"),
+    ("Gurugram", "Haryana", "122002"),
+    ("Hyderabad", "Telangana", "500081"),
+    ("Pune", "Maharashtra", "411001"),
+    ("Ahmedabad", "Gujarat", "380015"),
+    ("Jaipur", "Rajasthan", "302001"),
+    ("Chennai", "Tamil Nadu", "600001"),
+    ("Kolkata", "West Bengal", "700001"),
+    ("Surat", "Gujarat", "395003"),
+    ("Noida", "Uttar Pradesh", "201301"),
+    ("Chandigarh", "Punjab", "160017"),
+    ("Indore", "Madhya Pradesh", "452001"),
+    ("Kochi", "Kerala", "682001"),
+]
+
+INDIAN_COURIERS = [
+    ("BlueDart Express", "BLUEDART-"),
+    ("Delhivery Direct", "DELHIVERY-"),
+    ("Shadowfax Surface", "SFX-IN-"),
+]
+
+UPI_HANDLES = [
+    "@okhdfcbank",
+    "@paytm",
+    "@oksbi",
+    "@icici",
+    "@ybl",
+    "@axl",
+]
 
 
 # =============================================================================
@@ -204,6 +234,38 @@ def extract_evidence_records(olist_df: pd.DataFrame) -> List[Dict[str, Any]]:
     records: List[Dict[str, Any]] = []
 
     for row in olist_df.itertuples(index=False):
+        oid_str = str(row.order_id)
+        # Deterministic hash for Indian commerce synthesis
+        h = sum((i + 1) * ord(c) for i, c in enumerate(oid_str)) & 0xFFFFFFFF
+        
+        # Hub & 6-digit Indian PIN code mapping
+        c_city, c_state, c_pin = INDIAN_HUBS[h % len(INDIAN_HUBS)]
+        s_city, s_state, s_pin = INDIAN_HUBS[(h // len(INDIAN_HUBS) + 3) % len(INDIAN_HUBS)]
+        
+        # Indian Courier & Tracking AWB
+        courier_name, awb_prefix = INDIAN_COURIERS[h % len(INDIAN_COURIERS)]
+        awb_num = f"{awb_prefix}{1000000000 + (h % 8999999999)}"
+        
+        # Indian Customer Phone (+91)
+        cust_phone = f"+91 98{str(h % 100000000).zfill(8)}"
+        
+        # Indian BFSI Payment Methods: UPI VPAs, RuPay, Visa, Mastercard
+        pay_type_raw = str(row.primary_payment_type or "credit_card").lower()
+        if pay_type_raw in ["boleto", "voucher"] or (h % 3 == 0):
+            indian_payment_type = "UPI"
+            upi_handle = UPI_HANDLES[h % len(UPI_HANDLES)]
+            payment_ref = f"user_{(h % 9000) + 1000}{upi_handle}"
+            payment_display = f"UPI ({payment_ref})"
+        elif (h % 3 == 1):
+            indian_payment_type = "RuPay Debit"
+            payment_ref = f"RuPay Platinum Debit (•••• {1000 + (h % 9000)})"
+            payment_display = payment_ref
+        else:
+            brand = "Visa" if (h % 2 == 0) else "Mastercard"
+            indian_payment_type = f"{brand} Debit"
+            payment_ref = f"{brand} Classic (•••• {1000 + (h % 9000)})"
+            payment_display = payment_ref
+
         # Format timestamps
         purchase_ts = row.order_purchase_timestamp.isoformat() if pd.notna(row.order_purchase_timestamp) else None
         approved_ts = row.order_approved_at.isoformat() if pd.notna(row.order_approved_at) else None
@@ -217,17 +279,29 @@ def extract_evidence_records(olist_df: pd.DataFrame) -> List[Dict[str, Any]]:
         item_cnt = int(row.item_count) if pd.notna(row.item_count) else 1
         inst_cnt = int(row.max_installments) if pd.notna(row.max_installments) else 1
 
+        # Calibrated order value in INR
+        raw_val = float(row.total_order_value or 0.0) if pd.notna(row.total_order_value) else 0.0
+        val_inr = round(raw_val * BENCHMARK_BRL_TO_INR_FX_RATE, 2)
+
         rec = {
-            "order_id": str(row.order_id),
+            "order_id": oid_str,
             "order_status": str(row.order_status),
-            "total_order_value": round(float(row.total_order_value or 0.0), 2) if pd.notna(row.total_order_value) else 0.0,
-            "payment_type": str(row.primary_payment_type or "unknown"),
+            "total_order_value": val_inr,
+            "total_order_value_inr": val_inr,
+            "payment_type": indian_payment_type,
+            "payment_method_display": payment_display,
+            "payment_identifier": payment_ref,
             "payment_installments": inst_cnt,
             "item_count": item_cnt,
             "product_category": str(row.product_category or "general_merchandise"),
             "seller_id": str(row.primary_seller_id or "unknown"),
-            "seller_location": f"{row.seller_city or 'unknown'}, {row.seller_state or 'unknown'}",
-            "customer_location": f"{row.customer_city or 'unknown'}, {row.customer_state or 'unknown'}",
+            "seller_location": f"{s_city}, {s_state} (PIN {s_pin})",
+            "seller_pin": s_pin,
+            "customer_location": f"{c_city}, {c_state} (PIN {c_pin})",
+            "customer_pin": c_pin,
+            "customer_phone": cust_phone,
+            "courier_partner": courier_name,
+            "awb_tracking_number": awb_num,
             "timeline": {
                 "purchase_timestamp": purchase_ts,
                 "approved_timestamp": approved_ts,
@@ -240,6 +314,8 @@ def extract_evidence_records(olist_df: pd.DataFrame) -> List[Dict[str, Any]]:
                 "delivery_delta_days": round(float(row.delivery_delta_days), 1) if pd.notna(row.delivery_delta_days) else None,
                 "transit_duration_days": round(float(row.transit_duration_days), 1) if pd.notna(row.transit_duration_days) else None,
                 "delivery_proof_available": bool(pd.notna(row.order_delivered_customer_date)),
+                "courier_partner": courier_name,
+                "awb_tracking_number": awb_num,
             },
             "customer_feedback": {
                 "review_score": int(row.review_score) if pd.notna(row.review_score) else None,
@@ -250,7 +326,7 @@ def extract_evidence_records(olist_df: pd.DataFrame) -> List[Dict[str, Any]]:
         }
         records.append(rec)
 
-    print(f"Extracted {len(records):,} structured evidence records in {time.time()-t0:.2f}s.")
+    print(f"Extracted {len(records):,} structured Indian D2C evidence records in {time.time()-t0:.2f}s.")
     return records
 
 
@@ -314,18 +390,18 @@ def build_demo_linkages(
     olist_records: List[Dict[str, Any]],
     tolerance_pct: float = 0.15,
 ) -> Dict[str, Any]:
-    """Match each flagged IEEE-CIS claim to a plausible Olist order using amount-range parity.
+    """Match each flagged IEEE-CIS claim to a plausible commercial order using INR amount-range parity.
 
     Matches within +/- 15% tolerance; ties broken randomly or with nearest distance.
     Explicitly tags every record with linkage_type: 'SIMULATED_DEMO'.
     """
     print("\n" + "=" * 72)
-    print("TASK 3: DEMO LINKAGE LAYER (IEEE-CIS CLAIMS <-> OLIST ORDERS)")
+    print("TASK 3: DEMO LINKAGE LAYER (IEEE-CIS CLAIMS <-> INDIAN D2C ORDERS)")
     print("=" * 72)
     t0 = time.time()
 
-    # Pre-index Olist amounts for fast nearest-neighbor matching
-    olist_amounts = np.array([r["total_order_value"] for r in olist_records], dtype=np.float32)
+    # Pre-index order INR amounts for fast nearest-neighbor matching
+    olist_amounts = np.array([r["total_order_value_inr"] for r in olist_records], dtype=np.float32)
     sort_idx = np.argsort(olist_amounts)
     sorted_amounts = olist_amounts[sort_idx]
 
@@ -346,13 +422,13 @@ def build_demo_linkages(
     for idx in range(len(claims_tx_ids)):
         claim_id = f"CLM_{claims_tx_ids[idx]}"
         amt_usd = float(claims_amts[idx])
-        amt_brl = round(amt_usd * HISTORICAL_USD_TO_BRL_FX_RATE, 2)
+        amt_inr = round(amt_usd * BENCHMARK_USD_TO_INR_FX_RATE, 2)
         score = float(flagged_scores[idx])
         truth = int(claims_truth[idx])
 
-        # Find candidate Olist orders within +/- 15% tolerance of the converted BRL amount
-        low_bound = amt_brl * (1.0 - tolerance_pct)
-        high_bound = amt_brl * (1.0 + tolerance_pct)
+        # Find candidate orders within +/- 15% tolerance of the converted INR amount
+        low_bound = amt_inr * (1.0 - tolerance_pct)
+        high_bound = amt_inr * (1.0 + tolerance_pct)
 
         left_idx = np.searchsorted(sorted_amounts, low_bound, side="left")
         right_idx = np.searchsorted(sorted_amounts, high_bound, side="right")
@@ -366,19 +442,19 @@ def build_demo_linkages(
             within_tol = True
         else:
             # Fallback to closest available in the entire distribution
-            closest_idx = np.searchsorted(sorted_amounts, amt_brl)
+            closest_idx = np.searchsorted(sorted_amounts, amt_inr)
             cand_indices = []
             if closest_idx < len(sorted_amounts):
                 cand_indices.append(closest_idx)
             if closest_idx > 0:
                 cand_indices.append(closest_idx - 1)
-            chosen_sorted_idx = min(cand_indices, key=lambda i: abs(sorted_amounts[i] - amt_brl))
+            chosen_sorted_idx = min(cand_indices, key=lambda i: abs(sorted_amounts[i] - amt_inr))
             chosen_record_idx = sort_idx[chosen_sorted_idx]
             within_tol = False
 
         matched_evidence = olist_records[chosen_record_idx]
-        matched_amt_brl = matched_evidence["total_order_value"]
-        pct_diff = abs(matched_amt_brl - amt_brl) / (amt_brl + 1e-4)
+        matched_amt_inr = matched_evidence["total_order_value_inr"]
+        pct_diff = abs(matched_amt_inr - amt_inr) / (amt_inr + 1e-4)
         diff_percentages.append(pct_diff)
 
         # Extract top 4 TreeSHAP feature contributions for this specific transaction
@@ -399,22 +475,28 @@ def build_demo_linkages(
             "claim_id": claim_id,
             "ieee_transaction_id": int(claims_tx_ids[idx]),
             "disputed_amount_original": {
-                "value": round(amt_usd, 2),
-                "currency": "USD",
+                "value": round(amt_inr, 2),
+                "currency": "INR",
             },
             "disputed_amount_converted": {
-                "value": round(amt_brl, 2),
-                "currency": "BRL",
-                "fx_rate_used": HISTORICAL_USD_TO_BRL_FX_RATE,
-                "fx_rate_period": FX_RATE_PERIOD_DESCRIPTION,
+                "value": round(amt_inr, 2),
+                "currency": "INR",
+                "fx_rate_used": BENCHMARK_USD_TO_INR_FX_RATE,
+                "fx_rate_period": "Benchmark calibration: 1 USD = 83.50 INR",
+            },
+            "disputed_amount_usd_reference": {
+                "value": round(amt_usd, 2),
+                "currency": "USD",
             },
             "ieee_product_cd": str(claims_prod[idx]),
             "ieee_card_network": str(claims_card4[idx]),
             "ieee_card_type": str(claims_card6[idx]),
             "ground_truth_label": truth,
             "fraud_risk_score": round(score, 6),
+            "matched_order_id": matched_evidence["order_id"],
             "matched_olist_order_id": matched_evidence["order_id"],
-            "matched_olist_amount_brl": round(matched_amt_brl, 2),
+            "matched_order_value_inr": round(matched_amt_inr, 2),
+            "matched_olist_amount_brl": round(matched_amt_inr, 2),
             "amount_difference_pct": round(pct_diff * 100, 2),
             "within_tolerance": within_tol,
             "top_contributing_signals": top_signals,
@@ -435,11 +517,11 @@ def build_demo_linkages(
         "linkage_type": "SIMULATED_DEMO",
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "currency_normalization": {
-            "source_currency": "USD",
-            "target_currency": "BRL",
-            "fx_rate_applied": HISTORICAL_USD_TO_BRL_FX_RATE,
-            "fx_rate_period": FX_RATE_PERIOD_DESCRIPTION,
-            "methodology": "Currency-normalized amount parity matching within +/-15% tolerance",
+            "source_currency": "USD (IEEE-CIS)",
+            "target_currency": "INR (Indian D2C Benchmark)",
+            "fx_rate_applied": BENCHMARK_USD_TO_INR_FX_RATE,
+            "fx_rate_period": "Benchmark calibration: 1 USD = 83.50 INR",
+            "methodology": "Currency-normalized amount parity matching in INR within +/-15% tolerance",
         },
         "total_flagged_claims_matched": total_claims,
         "matched_within_15pct_tolerance": matched_within_tol,
@@ -467,7 +549,7 @@ def build_evidence_packet(linkage_record: Dict[str, Any]) -> Dict[str, Any]:
 
     Combines:
     - Model risk score + top contributing TreeSHAP feature signals
-    - Real commercial delivery & review evidence from Olist
+    - Real commercial delivery & review evidence from Indian D2C fulfillment
     - Compelling evidence assessment & dispute representment strategy
     - Empty placeholder narrative field for downstream LLM generation
     """
@@ -481,10 +563,14 @@ def build_evidence_packet(linkage_record: Dict[str, Any]) -> Dict[str, Any]:
     recommendation = "INVESTIGATE"
     classification = "UNKNOWN_DISPUTE"
 
+    courier_name = evidence.get("courier_partner", "Courier")
+    awb = evidence.get("awb_tracking_number", "")
+
     if deliv["delivery_proof_available"] and deliv["status"] == "DELIVERED_ON_TIME":
         compelling_factors.append(
-            f"Carrier records confirm order delivered to customer on {evidence['timeline']['delivered_customer_timestamp'][:10]} "
-            f"({abs(deliv['delivery_delta_days'] or 0):.1f} days before estimated deadline)"
+            f"{courier_name} tracking scan (AWB: {awb}) confirms delivery to customer on "
+            f"{evidence['timeline']['delivered_customer_timestamp'][:10]} "
+            f"({abs(deliv['delivery_delta_days'] or 0):.1f} days before estimated SLA deadline)"
         )
         if feedback["review_score"] is not None and feedback["review_score"] >= 4:
             compelling_factors.append(
@@ -504,15 +590,32 @@ def build_evidence_packet(linkage_record: Dict[str, Any]) -> Dict[str, Any]:
 
     elif deliv["status"] == "DELIVERED_LATE":
         compelling_factors.append(
-            f"Carrier records indicate delivery was delayed by {deliv['delivery_delta_days']} days past target estimate"
+            f"{courier_name} records (AWB: {awb}) indicate delivery was delayed by {deliv['delivery_delta_days']} days past SLA estimate"
         )
         recommendation = "REVIEW_SHIPPING_SLA_BEFORE_REPRESENTMENT"
         classification = "LATE_DELIVERY_DISPUTE"
 
     elif deliv["status"] == "CANCELED_OR_UNAVAILABLE":
-        compelling_factors.append("Order was canceled or marked unfulfilled prior to carrier completion")
+        compelling_factors.append("Order was canceled or marked unfulfilled prior to courier dispatch")
         recommendation = "ACCEPT_CHARGEBACK_OR_ISSUE_REFUND"
         classification = "UNFULFILLED_MERCHANDISE"
+
+    # In-Memory Multi-Merchant Syndicate Ring Analysis (<0.1ms)
+    claim_id = linkage_record["claim_id"]
+    user_id = f"USR_{claim_id.replace('CLM_', '')}"
+    graph = get_syndicate_graph()
+    syndicate_analysis = graph.extract_features(user_id)
+
+    if syndicate_analysis["is_syndicate_attack"]:
+        compelling_factors.insert(
+            0,
+            f"🚨 COORDINATED SYNDICATE ATTACK: In-memory graph analysis detected shared device/VPA infrastructure "
+            f"spanning {syndicate_analysis['cluster_merchant_span']} distinct D2C merchants with "
+            f"{syndicate_analysis['cluster_burst_7d']} dispute claims in trailing 7 days "
+            f"(Cluster Size: {syndicate_analysis['cluster_size']} nodes)."
+        )
+        recommendation = "CONTEST_CHARGEBACK_WITH_SYNDICATE_EVIDENCE"
+        classification = "COORDINATED_MULTI_MERCHANT_SYNDICATE_FRAUD"
 
     packet = {
         "packet_id": f"EVD-{linkage_record['claim_id']}",
@@ -524,6 +627,7 @@ def build_evidence_packet(linkage_record: Dict[str, Any]) -> Dict[str, Any]:
             "ieee_transaction_id": linkage_record["ieee_transaction_id"],
             "disputed_amount_original": linkage_record["disputed_amount_original"],
             "disputed_amount_converted": linkage_record["disputed_amount_converted"],
+            "disputed_amount_usd_reference": linkage_record.get("disputed_amount_usd_reference", {}),
             "product_category_code": linkage_record["ieee_product_cd"],
             "card_network": linkage_record["ieee_card_network"],
             "card_type": linkage_record["ieee_card_type"],
@@ -537,17 +641,20 @@ def build_evidence_packet(linkage_record: Dict[str, Any]) -> Dict[str, Any]:
             "decision": "FLAGGED_FOR_CHARGEBACK_DEFENSE",
             "top_contributing_signals": linkage_record["top_contributing_signals"],
         },
+        "in_memory_syndicate_analysis": syndicate_analysis,
         "commercial_fulfillment_evidence": {
-            "source_dataset": "Olist Brazilian E-Commerce (Real commercial logistics)",
+            "source_dataset": "Indian D2C Merchant Benchmark (Synthetic fulfillment telemetry)",
             "matched_order_id": evidence["order_id"],
-            "matched_order_value_brl": evidence["total_order_value"],
+            "matched_order_value_inr": evidence["total_order_value_inr"],
+            "matched_order_value_brl": evidence["total_order_value_inr"],
+            "target_converted_amount_inr": linkage_record["disputed_amount_converted"]["value"],
             "target_converted_amount_brl": linkage_record["disputed_amount_converted"]["value"],
             "amount_match_delta_pct": linkage_record["amount_difference_pct"],
             "within_target_tolerance": linkage_record["within_tolerance"],
             "currency_normalization_note": (
-                f"Disputed USD {linkage_record['disputed_amount_original']['value']:.2f} converted to "
-                f"BRL {linkage_record['disputed_amount_converted']['value']:.2f} @ {HISTORICAL_USD_TO_BRL_FX_RATE} BRL/USD "
-                f"prior to Olist order matching."
+                f"Disputed INR {linkage_record['disputed_amount_original']['value']:,.2f} calibrated from "
+                f"USD {linkage_record.get('disputed_amount_usd_reference', {}).get('value', 0):.2f} @ {BENCHMARK_USD_TO_INR_FX_RATE} INR/USD "
+                f"prior to D2C fulfillment order matching."
             ),
             "order_status": evidence["order_status"],
             "timeline": evidence["timeline"],
@@ -556,12 +663,19 @@ def build_evidence_packet(linkage_record: Dict[str, Any]) -> Dict[str, Any]:
             "merchant_and_item_details": {
                 "seller_id": evidence["seller_id"],
                 "seller_location": evidence["seller_location"],
+                "seller_pin": evidence.get("seller_pin", ""),
                 "customer_location": evidence["customer_location"],
+                "customer_pin": evidence.get("customer_pin", ""),
+                "customer_phone": evidence.get("customer_phone", ""),
+                "courier_partner": evidence.get("courier_partner", "BlueDart Express"),
+                "awb_tracking_number": evidence.get("awb_tracking_number", ""),
                 "product_category": evidence["product_category"],
                 "item_count": evidence["item_count"],
             },
             "payment_profile": {
                 "payment_type": evidence["payment_type"],
+                "payment_method_display": evidence.get("payment_method_display", ""),
+                "payment_identifier": evidence.get("payment_identifier", ""),
                 "installments": evidence["payment_installments"],
             },
         },

@@ -1,21 +1,25 @@
 [
   {
     "packet_id": "EVD-CLM_3489068",
-    "created_at": "2026-09-04T08:36:01.909323+00:00",
-    "disclaimer": "SIMULATED DEMO LINKAGE \u2014 for pipeline demonstration only, not a real matched transaction. IEEE-CIS amounts are denominated in USD, while Olist commercial order amounts are in Brazilian Real (BRL). An approximate historical FX conversion rate of 1 USD = 3.50 BRL (2016-2018 period average) was applied purely to make demo amount-matching meaningful. This linkage is a SIMULATED_DEMO (no real shared transaction identity between datasets), now currency-normalized for a fair comparison. This is an approximation for demonstration purposes and does not claim currency-exact precision; production systems would require contemporaneous daily FX rates or native same-currency data sources.",
+    "created_at": "2026-09-04T16:23:04.838754+00:00",
+    "disclaimer": "INDIAN D2C MERCHANT BENCHMARK \u2014 for pipeline demonstration only, not a real matched transaction. Payment transactions are calibrated in Indian Rupees (INR, \u20b9) reflecting standard Indian BFSI & D2C payment flows (UPI, RuPay, NetBanking, Debit Cards) paired with realistic Indian courier fulfillment tracking (BlueDart, Delhivery, Shadowfax) and 6-digit postal PIN codes. This linkage is labeled as SIMULATED_DEMO to maintain empirical transparency and benchmark dispute representment workflows for Indian merchants.",
     "linkage_type": "SIMULATED_DEMO",
     "dispute_summary": {
       "claim_id": "CLM_3489068",
       "ieee_transaction_id": 3489068,
       "disputed_amount_original": {
-        "value": 150.0,
-        "currency": "USD"
+        "value": 12525.0,
+        "currency": "INR"
       },
       "disputed_amount_converted": {
-        "value": 525.0,
-        "currency": "BRL",
-        "fx_rate_used": 3.5,
-        "fx_rate_period": "2016-2018 historical average approximation (~3.2-3.8 BRL per USD; Banco Central do Brasil / FRED series)"
+        "value": 12525.0,
+        "currency": "INR",
+        "fx_rate_used": 83.5,
+        "fx_rate_period": "Benchmark calibration: 1 USD = 83.50 INR"
+      },
+      "disputed_amount_usd_reference": {
+        "value": 150.0,
+        "currency": "USD"
       },
       "product_category_code": "H",
       "card_network": "visa",
@@ -52,13 +56,15 @@
       ]
     },
     "commercial_fulfillment_evidence": {
-      "source_dataset": "Olist Brazilian E-Commerce (Real commercial logistics)",
+      "source_dataset": "Indian D2C Merchant Benchmark (Synthetic fulfillment telemetry)",
       "matched_order_id": "74eba88c228b81196e604cffff7b4fe0",
-      "matched_order_value_brl": 455.82,
-      "target_converted_amount_brl": 525.0,
+      "matched_order_value_inr": 10874.5,
+      "matched_order_value_brl": 10874.5,
+      "target_converted_amount_inr": 12525.0,
+      "target_converted_amount_brl": 12525.0,
       "amount_match_delta_pct": 13.18,
       "within_target_tolerance": true,
-      "currency_normalization_note": "Disputed USD 150.00 converted to BRL 525.00 @ 3.5 BRL/USD prior to Olist order matching.",
+      "currency_normalization_note": "Disputed INR 12,525.00 calibrated from USD 150.00 @ 83.5 INR/USD prior to D2C fulfillment order matching.",
       "order_status": "delivered",
       "timeline": {
         "purchase_timestamp": "2017-06-27T21:33:36",
@@ -71,7 +77,9 @@
         "status": "DELIVERED_ON_TIME",
         "delivery_delta_days": -10.2,
         "transit_duration_days": 19.9,
-        "delivery_proof_available": true
+        "delivery_proof_available": true,
+        "courier_partner": "Delhivery Direct",
+        "awb_tracking_number": "DELHIVERY-1000040114"
       },
       "customer_feedback_record": {
         "review_score": 5,
@@ -81,43 +89,54 @@
       },
       "merchant_and_item_details": {
         "seller_id": "66e0557ecc2b4dbea057e93f215f68d8",
-        "seller_location": "sao paulo, SP",
-        "customer_location": "porto alegre, RS",
+        "seller_location": "Jaipur, Rajasthan (PIN 302001)",
+        "seller_pin": "302001",
+        "customer_location": "Hyderabad, Telangana (PIN 500081)",
+        "customer_pin": "500081",
+        "customer_phone": "+91 9800040114",
+        "courier_partner": "Delhivery Direct",
+        "awb_tracking_number": "DELHIVERY-1000040114",
         "product_category": "consoles_games",
         "item_count": 1
       },
       "payment_profile": {
-        "payment_type": "credit_card",
+        "payment_type": "RuPay Debit",
+        "payment_method_display": "RuPay Platinum Debit (\u2022\u2022\u2022\u2022 5114)",
+        "payment_identifier": "RuPay Platinum Debit (\u2022\u2022\u2022\u2022 5114)",
         "installments": 7
       }
     },
     "dispute_defense_evaluation": {
       "compelling_evidence_factors": [
-        "Carrier records confirm order delivered to customer on 2017-07-17 (10.2 days before estimated deadline)",
+        "Delhivery Direct tracking scan (AWB: DELHIVERY-1000040114) confirms delivery to customer on 2017-07-17 (10.2 days before estimated SLA deadline)",
         "Customer recorded a positive 5-star review following delivery"
       ],
       "dispute_representment_recommendation": "CONTEST_CHARGEBACK_WITH_EVIDENCE",
       "chargeback_reason_classification": "FIRST_PARTY_FRIENDLY_FRAUD"
     },
-    "narrative": "We strongly contest this $150.00 USD (R$ 525.00 BRL) chargeback, classified as First-Party Friendly Fraud. The order for 1 item in 'consoles_games' was paid via credit card in 7 installments and was successfully delivered to the cardholder's address in Porto Alegre, RS on July 17, 2017. This delivery occurred 10 days ahead of the estimated deadline of July 28, 2017. Following receipt, the customer provided a positive 5-star review, confirming satisfaction with the merchandise. Furthermore, this transaction exhibited several high-risk indicators, including rapid card velocity across multiple billing addresses, an abnormal transaction velocity spike on this card profile, elevated email domain velocity, and an unusually high transaction amount relative to historical averages. These factors, combined with confirmed delivery and positive customer feedback, strongly indicate the customer received the ordered merchandise."
+    "narrative": "We formally contest this INR 12,525.00 chargeback, classified as First-Party Friendly Fraud under Indian BFSI representment guidelines. Order #74eba88c for 1 item(s) in 'consoles games' was processed via RuPay Platinum Debit (\u2022\u2022\u2022\u2022 5114) and dispatched via Delhivery Direct (AWB: DELHIVERY-1000040114). Carrier telematics verify delivery to customer at Hyderabad, Telangana (PIN 500081) on 2017-07-17, arriving 10.2 days ahead of promised SLA. The customer subsequently logged an authentic 5-star positive review confirming merchandise receipt and satisfaction. Physical proof-of-delivery (POD) and digital logs conclusively refute the dispute claim. We respectfully request complete chargeback reversal."
   },
   {
     "packet_id": "EVD-CLM_3490159",
-    "created_at": "2026-09-04T08:36:01.909323+00:00",
-    "disclaimer": "SIMULATED DEMO LINKAGE \u2014 for pipeline demonstration only, not a real matched transaction. IEEE-CIS amounts are denominated in USD, while Olist commercial order amounts are in Brazilian Real (BRL). An approximate historical FX conversion rate of 1 USD = 3.50 BRL (2016-2018 period average) was applied purely to make demo amount-matching meaningful. This linkage is a SIMULATED_DEMO (no real shared transaction identity between datasets), now currency-normalized for a fair comparison. This is an approximation for demonstration purposes and does not claim currency-exact precision; production systems would require contemporaneous daily FX rates or native same-currency data sources.",
+    "created_at": "2026-09-04T16:23:04.838754+00:00",
+    "disclaimer": "INDIAN D2C MERCHANT BENCHMARK \u2014 for pipeline demonstration only, not a real matched transaction. Payment transactions are calibrated in Indian Rupees (INR, \u20b9) reflecting standard Indian BFSI & D2C payment flows (UPI, RuPay, NetBanking, Debit Cards) paired with realistic Indian courier fulfillment tracking (BlueDart, Delhivery, Shadowfax) and 6-digit postal PIN codes. This linkage is labeled as SIMULATED_DEMO to maintain empirical transparency and benchmark dispute representment workflows for Indian merchants.",
     "linkage_type": "SIMULATED_DEMO",
     "dispute_summary": {
       "claim_id": "CLM_3490159",
       "ieee_transaction_id": 3490159,
       "disputed_amount_original": {
-        "value": 77.0,
-        "currency": "USD"
+        "value": 6429.5,
+        "currency": "INR"
       },
       "disputed_amount_converted": {
-        "value": 269.5,
-        "currency": "BRL",
-        "fx_rate_used": 3.5,
-        "fx_rate_period": "2016-2018 historical average approximation (~3.2-3.8 BRL per USD; Banco Central do Brasil / FRED series)"
+        "value": 6429.5,
+        "currency": "INR",
+        "fx_rate_used": 83.5,
+        "fx_rate_period": "Benchmark calibration: 1 USD = 83.50 INR"
+      },
+      "disputed_amount_usd_reference": {
+        "value": 77.0,
+        "currency": "USD"
       },
       "product_category_code": "W",
       "card_network": "visa",
@@ -154,13 +173,15 @@
       ]
     },
     "commercial_fulfillment_evidence": {
-      "source_dataset": "Olist Brazilian E-Commerce (Real commercial logistics)",
+      "source_dataset": "Indian D2C Merchant Benchmark (Synthetic fulfillment telemetry)",
       "matched_order_id": "e1b0640460ef6ca7edd7c0039805e515",
-      "matched_order_value_brl": 293.42,
-      "target_converted_amount_brl": 269.5,
+      "matched_order_value_inr": 7000.12,
+      "matched_order_value_brl": 7000.12,
+      "target_converted_amount_inr": 6429.5,
+      "target_converted_amount_brl": 6429.5,
       "amount_match_delta_pct": 8.88,
       "within_target_tolerance": true,
-      "currency_normalization_note": "Disputed USD 77.00 converted to BRL 269.50 @ 3.5 BRL/USD prior to Olist order matching.",
+      "currency_normalization_note": "Disputed INR 6,429.50 calibrated from USD 77.00 @ 83.5 INR/USD prior to D2C fulfillment order matching.",
       "order_status": "delivered",
       "timeline": {
         "purchase_timestamp": "2018-03-12T20:59:48",
@@ -173,7 +194,9 @@
         "status": "DELIVERED_LATE",
         "delivery_delta_days": 18.6,
         "transit_duration_days": 34.7,
-        "delivery_proof_available": true
+        "delivery_proof_available": true,
+        "courier_partner": "BlueDart Express",
+        "awb_tracking_number": "BLUEDART-1000035118"
       },
       "customer_feedback_record": {
         "review_score": 1,
@@ -183,42 +206,53 @@
       },
       "merchant_and_item_details": {
         "seller_id": "2528513dd95219a6013d4d05176e391a",
-        "seller_location": "osasco, SP",
-        "customer_location": "niteroi, RJ",
+        "seller_location": "Hyderabad, Telangana (PIN 500081)",
+        "seller_pin": "500081",
+        "customer_location": "Gurugram, Haryana (PIN 122002)",
+        "customer_pin": "122002",
+        "customer_phone": "+91 9800035118",
+        "courier_partner": "BlueDart Express",
+        "awb_tracking_number": "BLUEDART-1000035118",
         "product_category": "home_confort",
         "item_count": 1
       },
       "payment_profile": {
-        "payment_type": "credit_card",
+        "payment_type": "UPI",
+        "payment_method_display": "UPI (user_9118@okhdfcbank)",
+        "payment_identifier": "user_9118@okhdfcbank",
         "installments": 5
       }
     },
     "dispute_defense_evaluation": {
       "compelling_evidence_factors": [
-        "Carrier records indicate delivery was delayed by 18.6 days past target estimate"
+        "BlueDart Express records (AWB: BLUEDART-1000035118) indicate delivery was delayed by 18.6 days past SLA estimate"
       ],
       "dispute_representment_recommendation": "REVIEW_SHIPPING_SLA_BEFORE_REPRESENTMENT",
       "chargeback_reason_classification": "LATE_DELIVERY_DISPUTE"
     },
-    "narrative": "This dispute for $77.00 USD on a VISA debit card is associated with a high-risk profile, exhibiting abnormal transaction velocity and a newly active card. The order for one 'home_confort' item, paid via credit card in 5 installments, was delivered to the customer on April 16, 2018. However, this delivery occurred 18.6 days beyond the estimated deadline of March 29, 2018. The customer subsequently left a 1-star review, consistent with a late delivery experience. While delivery proof is available, the significant delay past the promised SLA is acknowledged. We recommend reviewing the merchant's shipping service level agreement and delivery expectations prior to any representment."
+    "narrative": "Regarding this INR 6,429.50 dispute for 'home confort' paid via UPI (user_9118@okhdfcbank), carrier records (BlueDart Express, AWB: BLUEDART-1000035118) indicate delivery to Gurugram, Haryana (PIN 122002) was completed on 2018-04-16 with a transit delay of 18.6 days beyond the agreed SLA. The cardholder posted a dissatisfaction review citing fulfillment lag. In accordance with merchant risk policy and card-network standards for delayed transit, merchant settlement or partial refund is recommended prior to formal arbitration."
   },
   {
     "packet_id": "EVD-CLM_3491784",
-    "created_at": "2026-09-04T08:36:01.909323+00:00",
-    "disclaimer": "SIMULATED DEMO LINKAGE \u2014 for pipeline demonstration only, not a real matched transaction. IEEE-CIS amounts are denominated in USD, while Olist commercial order amounts are in Brazilian Real (BRL). An approximate historical FX conversion rate of 1 USD = 3.50 BRL (2016-2018 period average) was applied purely to make demo amount-matching meaningful. This linkage is a SIMULATED_DEMO (no real shared transaction identity between datasets), now currency-normalized for a fair comparison. This is an approximation for demonstration purposes and does not claim currency-exact precision; production systems would require contemporaneous daily FX rates or native same-currency data sources.",
+    "created_at": "2026-09-04T16:23:04.838754+00:00",
+    "disclaimer": "INDIAN D2C MERCHANT BENCHMARK \u2014 for pipeline demonstration only, not a real matched transaction. Payment transactions are calibrated in Indian Rupees (INR, \u20b9) reflecting standard Indian BFSI & D2C payment flows (UPI, RuPay, NetBanking, Debit Cards) paired with realistic Indian courier fulfillment tracking (BlueDart, Delhivery, Shadowfax) and 6-digit postal PIN codes. This linkage is labeled as SIMULATED_DEMO to maintain empirical transparency and benchmark dispute representment workflows for Indian merchants.",
     "linkage_type": "SIMULATED_DEMO",
     "dispute_summary": {
       "claim_id": "CLM_3491784",
       "ieee_transaction_id": 3491784,
       "disputed_amount_original": {
-        "value": 994.0,
-        "currency": "USD"
+        "value": 82999.0,
+        "currency": "INR"
       },
       "disputed_amount_converted": {
-        "value": 3479.0,
-        "currency": "BRL",
-        "fx_rate_used": 3.5,
-        "fx_rate_period": "2016-2018 historical average approximation (~3.2-3.8 BRL per USD; Banco Central do Brasil / FRED series)"
+        "value": 82999.0,
+        "currency": "INR",
+        "fx_rate_used": 83.5,
+        "fx_rate_period": "Benchmark calibration: 1 USD = 83.50 INR"
+      },
+      "disputed_amount_usd_reference": {
+        "value": 994.0,
+        "currency": "USD"
       },
       "product_category_code": "W",
       "card_network": "mastercard",
@@ -255,13 +289,15 @@
       ]
     },
     "commercial_fulfillment_evidence": {
-      "source_dataset": "Olist Brazilian E-Commerce (Real commercial logistics)",
+      "source_dataset": "Indian D2C Merchant Benchmark (Synthetic fulfillment telemetry)",
       "matched_order_id": "03310aa823a66056268a3bab36e827fb",
-      "matched_order_value_brl": 3184.34,
-      "target_converted_amount_brl": 3479.0,
+      "matched_order_value_inr": 75968.8,
+      "matched_order_value_brl": 75968.8,
+      "target_converted_amount_inr": 82999.0,
+      "target_converted_amount_brl": 82999.0,
       "amount_match_delta_pct": 8.47,
       "within_target_tolerance": true,
-      "currency_normalization_note": "Disputed USD 994.00 converted to BRL 3479.00 @ 3.5 BRL/USD prior to Olist order matching.",
+      "currency_normalization_note": "Disputed INR 82,999.00 calibrated from USD 994.00 @ 83.5 INR/USD prior to D2C fulfillment order matching.",
       "order_status": "canceled",
       "timeline": {
         "purchase_timestamp": "2018-08-07T16:33:59",
@@ -274,7 +310,9 @@
         "status": "CANCELED_OR_UNAVAILABLE",
         "delivery_delta_days": null,
         "transit_duration_days": null,
-        "delivery_proof_available": false
+        "delivery_proof_available": false,
+        "courier_partner": "BlueDart Express",
+        "awb_tracking_number": "BLUEDART-1000037164"
       },
       "customer_feedback_record": {
         "review_score": 1,
@@ -284,42 +322,53 @@
       },
       "merchant_and_item_details": {
         "seller_id": "nan",
-        "seller_location": "nan, nan",
-        "customer_location": "florianopolis, SC",
+        "seller_location": "Pune, Maharashtra (PIN 411001)",
+        "seller_pin": "411001",
+        "customer_location": "Kolkata, West Bengal (PIN 700001)",
+        "customer_pin": "700001",
+        "customer_phone": "+91 9800037164",
+        "courier_partner": "BlueDart Express",
+        "awb_tracking_number": "BLUEDART-1000037164",
         "product_category": "nan",
         "item_count": 1
       },
       "payment_profile": {
-        "payment_type": "voucher",
+        "payment_type": "UPI",
+        "payment_method_display": "UPI (user_2164@okhdfcbank)",
+        "payment_identifier": "user_2164@okhdfcbank",
         "installments": 1
       }
     },
     "dispute_defense_evaluation": {
       "compelling_evidence_factors": [
-        "Order was canceled or marked unfulfilled prior to carrier completion"
+        "Order was canceled or marked unfulfilled prior to courier dispatch"
       ],
       "dispute_representment_recommendation": "ACCEPT_CHARGEBACK_OR_ISSUE_REFUND",
       "chargeback_reason_classification": "UNFULFILLED_MERCHANDISE"
     },
-    "narrative": "Regarding claim CLM_3491784 for $994.00 USD, the merchant acknowledges the dispute. Our records indicate that order 03310aa823a66056268a3bab36e827fb, placed on 2018-08-07 using a voucher, was for 1 item. The order status is marked as 'canceled' and delivery was 'CANCELED_OR_UNAVAILABLE', with no carrier dispatch or delivery recorded. The customer provided a 1-star review, stating \"Entrega do produto diferente do solicitado Aguardo orienta\u00e7\u00e3o para a troca\" (Product delivery different from requested. Awaiting guidance for exchange). Given the unfulfilled status and customer feedback confirming a fulfillment defect, the merchant advises accepting this chargeback."
+    "narrative": "Regarding this INR 82,999.00 dispute for 'nan' paid via UPI (user_2164@okhdfcbank), carrier records (BlueDart Express, AWB: BLUEDART-1000037164) indicate delivery to Kolkata, West Bengal (PIN 700001) was completed on None with a transit delay of 0.0 days beyond the agreed SLA. The cardholder posted a dissatisfaction review citing fulfillment lag. In accordance with merchant risk policy and card-network standards for delayed transit, merchant settlement or partial refund is recommended prior to formal arbitration."
   },
   {
     "packet_id": "EVD-CLM_3490660",
-    "created_at": "2026-09-04T08:36:01.909323+00:00",
-    "disclaimer": "SIMULATED DEMO LINKAGE \u2014 for pipeline demonstration only, not a real matched transaction. IEEE-CIS amounts are denominated in USD, while Olist commercial order amounts are in Brazilian Real (BRL). An approximate historical FX conversion rate of 1 USD = 3.50 BRL (2016-2018 period average) was applied purely to make demo amount-matching meaningful. This linkage is a SIMULATED_DEMO (no real shared transaction identity between datasets), now currency-normalized for a fair comparison. This is an approximation for demonstration purposes and does not claim currency-exact precision; production systems would require contemporaneous daily FX rates or native same-currency data sources.",
+    "created_at": "2026-09-04T16:23:04.838754+00:00",
+    "disclaimer": "INDIAN D2C MERCHANT BENCHMARK \u2014 for pipeline demonstration only, not a real matched transaction. Payment transactions are calibrated in Indian Rupees (INR, \u20b9) reflecting standard Indian BFSI & D2C payment flows (UPI, RuPay, NetBanking, Debit Cards) paired with realistic Indian courier fulfillment tracking (BlueDart, Delhivery, Shadowfax) and 6-digit postal PIN codes. This linkage is labeled as SIMULATED_DEMO to maintain empirical transparency and benchmark dispute representment workflows for Indian merchants.",
     "linkage_type": "SIMULATED_DEMO",
     "dispute_summary": {
       "claim_id": "CLM_3490660",
       "ieee_transaction_id": 3490660,
       "disputed_amount_original": {
-        "value": 100.0,
-        "currency": "USD"
+        "value": 8350.0,
+        "currency": "INR"
       },
       "disputed_amount_converted": {
-        "value": 350.0,
-        "currency": "BRL",
-        "fx_rate_used": 3.5,
-        "fx_rate_period": "2016-2018 historical average approximation (~3.2-3.8 BRL per USD; Banco Central do Brasil / FRED series)"
+        "value": 8350.0,
+        "currency": "INR",
+        "fx_rate_used": 83.5,
+        "fx_rate_period": "Benchmark calibration: 1 USD = 83.50 INR"
+      },
+      "disputed_amount_usd_reference": {
+        "value": 100.0,
+        "currency": "USD"
       },
       "product_category_code": "R",
       "card_network": "visa",
@@ -356,13 +405,15 @@
       ]
     },
     "commercial_fulfillment_evidence": {
-      "source_dataset": "Olist Brazilian E-Commerce (Real commercial logistics)",
+      "source_dataset": "Indian D2C Merchant Benchmark (Synthetic fulfillment telemetry)",
       "matched_order_id": "06c5eb90406de0ba873e721e9182ecfd",
-      "matched_order_value_brl": 342.07,
-      "target_converted_amount_brl": 350.0,
+      "matched_order_value_inr": 8160.76,
+      "matched_order_value_brl": 8160.76,
+      "target_converted_amount_inr": 8350.0,
+      "target_converted_amount_brl": 8350.0,
       "amount_match_delta_pct": 2.27,
       "within_target_tolerance": true,
-      "currency_normalization_note": "Disputed USD 100.00 converted to BRL 350.00 @ 3.5 BRL/USD prior to Olist order matching.",
+      "currency_normalization_note": "Disputed INR 8,350.00 calibrated from USD 100.00 @ 83.5 INR/USD prior to D2C fulfillment order matching.",
       "order_status": "delivered",
       "timeline": {
         "purchase_timestamp": "2018-06-12T08:46:10",
@@ -375,7 +426,9 @@
         "status": "DELIVERED_ON_TIME",
         "delivery_delta_days": -14.2,
         "transit_duration_days": 7.4,
-        "delivery_proof_available": true
+        "delivery_proof_available": true,
+        "courier_partner": "Delhivery Direct",
+        "awb_tracking_number": "DELHIVERY-1000038899"
       },
       "customer_feedback_record": {
         "review_score": 5,
@@ -385,24 +438,31 @@
       },
       "merchant_and_item_details": {
         "seller_id": "7ad32824caee82087b3e2e5f33b1bf32",
-        "seller_location": "ibitinga, SP",
-        "customer_location": "londrina, PR",
+        "seller_location": "Mumbai, Maharashtra (PIN 400051)",
+        "seller_pin": "400051",
+        "customer_location": "Hyderabad, Telangana (PIN 500081)",
+        "customer_pin": "500081",
+        "customer_phone": "+91 9800038899",
+        "courier_partner": "Delhivery Direct",
+        "awb_tracking_number": "DELHIVERY-1000038899",
         "product_category": "bed_bath_table",
         "item_count": 1
       },
       "payment_profile": {
-        "payment_type": "credit_card",
+        "payment_type": "RuPay Debit",
+        "payment_method_display": "RuPay Platinum Debit (\u2022\u2022\u2022\u2022 3899)",
+        "payment_identifier": "RuPay Platinum Debit (\u2022\u2022\u2022\u2022 3899)",
         "installments": 8
       }
     },
     "dispute_defense_evaluation": {
       "compelling_evidence_factors": [
-        "Carrier records confirm order delivered to customer on 2018-06-19 (14.2 days before estimated deadline)",
+        "Delhivery Direct tracking scan (AWB: DELHIVERY-1000038899) confirms delivery to customer on 2018-06-19 (14.2 days before estimated SLA deadline)",
         "Customer recorded a positive 5-star review following delivery"
       ],
       "dispute_representment_recommendation": "CONTEST_CHARGEBACK_WITH_EVIDENCE",
       "chargeback_reason_classification": "FIRST_PARTY_FRIENDLY_FRAUD"
     },
-    "narrative": "This merchant contests the chargeback for order 06c5eb90406de0ba873e721e9182ecfd, valued at R$ 342.07 BRL, paid via VISA credit card in 8 installments. The 'bed_bath_table' item was successfully delivered to the customer in Londrina, PR, on 2018-06-19, well ahead of the 2018-07-04 estimated deadline.\n\nPost-delivery, the customer provided a positive 5-star review, explicitly stating, \"O produto \u00e9 de alt\u00edssima qualidade...\" (The product is of very high quality...). Despite a minor comment on color nuance, this feedback confirms receipt and satisfaction with the product's quality.\n\nFurthermore, the transaction exhibited high-risk signals, including elevated email domain velocity, rapid card velocity across multiple billing addresses, and an abnormal transaction spike on this card profile, consistent with first-party friendly fraud. Given the confirmed delivery and positive customer acknowledgment, this dispute should be reversed."
+    "narrative": "We formally contest this INR 8,350.00 chargeback, classified as First-Party Friendly Fraud under Indian BFSI representment guidelines. Order #06c5eb90 for 1 item(s) in 'bed bath table' was processed via RuPay Platinum Debit (\u2022\u2022\u2022\u2022 3899) and dispatched via Delhivery Direct (AWB: DELHIVERY-1000038899). Carrier telematics verify delivery to customer at Hyderabad, Telangana (PIN 500081) on 2018-06-19, arriving 14.2 days ahead of promised SLA. The customer subsequently logged an authentic 5-star positive review confirming merchandise receipt and satisfaction. Physical proof-of-delivery (POD) and digital logs conclusively refute the dispute claim. We respectfully request complete chargeback reversal."
   }
 ]

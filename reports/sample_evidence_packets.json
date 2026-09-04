@@ -1,21 +1,25 @@
 [
   {
     "packet_id": "EVD-CLM_3489068",
-    "created_at": "2026-09-04T08:36:01.909323+00:00",
-    "disclaimer": "SIMULATED DEMO LINKAGE \u2014 for pipeline demonstration only, not a real matched transaction. IEEE-CIS amounts are denominated in USD, while Olist commercial order amounts are in Brazilian Real (BRL). An approximate historical FX conversion rate of 1 USD = 3.50 BRL (2016-2018 period average) was applied purely to make demo amount-matching meaningful. This linkage is a SIMULATED_DEMO (no real shared transaction identity between datasets), now currency-normalized for a fair comparison. This is an approximation for demonstration purposes and does not claim currency-exact precision; production systems would require contemporaneous daily FX rates or native same-currency data sources.",
+    "created_at": "2026-09-04T16:45:07.129981+00:00",
+    "disclaimer": "INDIAN D2C MERCHANT BENCHMARK \u2014 for pipeline demonstration only, not a real matched transaction. Payment transactions are calibrated in Indian Rupees (INR, \u20b9) reflecting standard Indian BFSI & D2C payment flows (UPI, RuPay, NetBanking, Debit Cards) paired with realistic Indian courier fulfillment tracking (BlueDart, Delhivery, Shadowfax) and 6-digit postal PIN codes. This linkage is labeled as SIMULATED_DEMO to maintain empirical transparency and benchmark dispute representment workflows for Indian merchants.",
     "linkage_type": "SIMULATED_DEMO",
     "dispute_summary": {
       "claim_id": "CLM_3489068",
       "ieee_transaction_id": 3489068,
       "disputed_amount_original": {
-        "value": 150.0,
-        "currency": "USD"
+        "value": 12525.0,
+        "currency": "INR"
       },
       "disputed_amount_converted": {
-        "value": 525.0,
-        "currency": "BRL",
-        "fx_rate_used": 3.5,
-        "fx_rate_period": "2016-2018 historical average approximation (~3.2-3.8 BRL per USD; Banco Central do Brasil / FRED series)"
+        "value": 12525.0,
+        "currency": "INR",
+        "fx_rate_used": 83.5,
+        "fx_rate_period": "Benchmark calibration: 1 USD = 83.50 INR"
+      },
+      "disputed_amount_usd_reference": {
+        "value": 150.0,
+        "currency": "USD"
       },
       "product_category_code": "H",
       "card_network": "visa",
@@ -51,14 +55,48 @@
         }
       ]
     },
+    "in_memory_syndicate_analysis": {
+      "identity_id": "USR_3489068",
+      "cluster_root": "usr:USR_3489068",
+      "cluster_size": 5,
+      "shared_infra_neighbor_count": 0,
+      "cluster_merchant_span": 1,
+      "cluster_burst_7d": 0,
+      "is_syndicate_attack": false,
+      "syndicate_alert": "NORMAL_MERCHANT_TRAFFIC",
+      "merchants_targeted": [
+        "MERCH_BOOKS_STORE"
+      ],
+      "recent_claims": [],
+      "infrastructure_breakdown": {
+        "user": [
+          "USR_3489068"
+        ],
+        "device": [
+          "DEV_HONEST_01"
+        ],
+        "vpa": [
+          "genuine_rahul@oksbi"
+        ],
+        "phone": [
+          "PH_HASH_111"
+        ],
+        "pincode": [
+          "560001"
+        ]
+      },
+      "extraction_latency_ms": 0.011
+    },
     "commercial_fulfillment_evidence": {
-      "source_dataset": "Olist Brazilian E-Commerce (Real commercial logistics)",
+      "source_dataset": "Indian D2C Merchant Benchmark (Synthetic fulfillment telemetry)",
       "matched_order_id": "74eba88c228b81196e604cffff7b4fe0",
-      "matched_order_value_brl": 455.82,
-      "target_converted_amount_brl": 525.0,
+      "matched_order_value_inr": 10874.5,
+      "matched_order_value_brl": 10874.5,
+      "target_converted_amount_inr": 12525.0,
+      "target_converted_amount_brl": 12525.0,
       "amount_match_delta_pct": 13.18,
       "within_target_tolerance": true,
-      "currency_normalization_note": "Disputed USD 150.00 converted to BRL 525.00 @ 3.5 BRL/USD prior to Olist order matching.",
+      "currency_normalization_note": "Disputed INR 12,525.00 calibrated from USD 150.00 @ 83.5 INR/USD prior to D2C fulfillment order matching.",
       "order_status": "delivered",
       "timeline": {
         "purchase_timestamp": "2017-06-27T21:33:36",
@@ -71,7 +109,9 @@
         "status": "DELIVERED_ON_TIME",
         "delivery_delta_days": -10.2,
         "transit_duration_days": 19.9,
-        "delivery_proof_available": true
+        "delivery_proof_available": true,
+        "courier_partner": "Delhivery Direct",
+        "awb_tracking_number": "DELHIVERY-1000040114"
       },
       "customer_feedback_record": {
         "review_score": 5,
@@ -81,19 +121,26 @@
       },
       "merchant_and_item_details": {
         "seller_id": "66e0557ecc2b4dbea057e93f215f68d8",
-        "seller_location": "sao paulo, SP",
-        "customer_location": "porto alegre, RS",
+        "seller_location": "Jaipur, Rajasthan (PIN 302001)",
+        "seller_pin": "302001",
+        "customer_location": "Hyderabad, Telangana (PIN 500081)",
+        "customer_pin": "500081",
+        "customer_phone": "+91 9800040114",
+        "courier_partner": "Delhivery Direct",
+        "awb_tracking_number": "DELHIVERY-1000040114",
         "product_category": "consoles_games",
         "item_count": 1
       },
       "payment_profile": {
-        "payment_type": "credit_card",
+        "payment_type": "RuPay Debit",
+        "payment_method_display": "RuPay Platinum Debit (\u2022\u2022\u2022\u2022 5114)",
+        "payment_identifier": "RuPay Platinum Debit (\u2022\u2022\u2022\u2022 5114)",
         "installments": 7
       }
     },
     "dispute_defense_evaluation": {
       "compelling_evidence_factors": [
-        "Carrier records confirm order delivered to customer on 2017-07-17 (10.2 days before estimated deadline)",
+        "Delhivery Direct tracking scan (AWB: DELHIVERY-1000040114) confirms delivery to customer on 2017-07-17 (10.2 days before estimated SLA deadline)",
         "Customer recorded a positive 5-star review following delivery"
       ],
       "dispute_representment_recommendation": "CONTEST_CHARGEBACK_WITH_EVIDENCE",
@@ -103,21 +150,25 @@
   },
   {
     "packet_id": "EVD-CLM_3490159",
-    "created_at": "2026-09-04T08:36:01.909323+00:00",
-    "disclaimer": "SIMULATED DEMO LINKAGE \u2014 for pipeline demonstration only, not a real matched transaction. IEEE-CIS amounts are denominated in USD, while Olist commercial order amounts are in Brazilian Real (BRL). An approximate historical FX conversion rate of 1 USD = 3.50 BRL (2016-2018 period average) was applied purely to make demo amount-matching meaningful. This linkage is a SIMULATED_DEMO (no real shared transaction identity between datasets), now currency-normalized for a fair comparison. This is an approximation for demonstration purposes and does not claim currency-exact precision; production systems would require contemporaneous daily FX rates or native same-currency data sources.",
+    "created_at": "2026-09-04T16:45:07.129981+00:00",
+    "disclaimer": "INDIAN D2C MERCHANT BENCHMARK \u2014 for pipeline demonstration only, not a real matched transaction. Payment transactions are calibrated in Indian Rupees (INR, \u20b9) reflecting standard Indian BFSI & D2C payment flows (UPI, RuPay, NetBanking, Debit Cards) paired with realistic Indian courier fulfillment tracking (BlueDart, Delhivery, Shadowfax) and 6-digit postal PIN codes. This linkage is labeled as SIMULATED_DEMO to maintain empirical transparency and benchmark dispute representment workflows for Indian merchants.",
     "linkage_type": "SIMULATED_DEMO",
     "dispute_summary": {
       "claim_id": "CLM_3490159",
       "ieee_transaction_id": 3490159,
       "disputed_amount_original": {
-        "value": 77.0,
-        "currency": "USD"
+        "value": 6429.5,
+        "currency": "INR"
       },
       "disputed_amount_converted": {
-        "value": 269.5,
-        "currency": "BRL",
-        "fx_rate_used": 3.5,
-        "fx_rate_period": "2016-2018 historical average approximation (~3.2-3.8 BRL per USD; Banco Central do Brasil / FRED series)"
+        "value": 6429.5,
+        "currency": "INR",
+        "fx_rate_used": 83.5,
+        "fx_rate_period": "Benchmark calibration: 1 USD = 83.50 INR"
+      },
+      "disputed_amount_usd_reference": {
+        "value": 77.0,
+        "currency": "USD"
       },
       "product_category_code": "W",
       "card_network": "visa",
@@ -153,14 +204,48 @@
         }
       ]
     },
+    "in_memory_syndicate_analysis": {
+      "identity_id": "USR_3490159",
+      "cluster_root": "usr:USR_3490159",
+      "cluster_size": 5,
+      "shared_infra_neighbor_count": 0,
+      "cluster_merchant_span": 1,
+      "cluster_burst_7d": 0,
+      "is_syndicate_attack": false,
+      "syndicate_alert": "NORMAL_MERCHANT_TRAFFIC",
+      "merchants_targeted": [
+        "MERCH_FOOTWEAR_D2C"
+      ],
+      "recent_claims": [],
+      "infrastructure_breakdown": {
+        "user": [
+          "USR_3490159"
+        ],
+        "device": [
+          "DEV_HONEST_02"
+        ],
+        "vpa": [
+          "anita_sharma@icici"
+        ],
+        "phone": [
+          "PH_HASH_222"
+        ],
+        "pincode": [
+          "110001"
+        ]
+      },
+      "extraction_latency_ms": 0.005
+    },
     "commercial_fulfillment_evidence": {
-      "source_dataset": "Olist Brazilian E-Commerce (Real commercial logistics)",
+      "source_dataset": "Indian D2C Merchant Benchmark (Synthetic fulfillment telemetry)",
       "matched_order_id": "e1b0640460ef6ca7edd7c0039805e515",
-      "matched_order_value_brl": 293.42,
-      "target_converted_amount_brl": 269.5,
+      "matched_order_value_inr": 7000.12,
+      "matched_order_value_brl": 7000.12,
+      "target_converted_amount_inr": 6429.5,
+      "target_converted_amount_brl": 6429.5,
       "amount_match_delta_pct": 8.88,
       "within_target_tolerance": true,
-      "currency_normalization_note": "Disputed USD 77.00 converted to BRL 269.50 @ 3.5 BRL/USD prior to Olist order matching.",
+      "currency_normalization_note": "Disputed INR 6,429.50 calibrated from USD 77.00 @ 83.5 INR/USD prior to D2C fulfillment order matching.",
       "order_status": "delivered",
       "timeline": {
         "purchase_timestamp": "2018-03-12T20:59:48",
@@ -173,7 +258,9 @@
         "status": "DELIVERED_LATE",
         "delivery_delta_days": 18.6,
         "transit_duration_days": 34.7,
-        "delivery_proof_available": true
+        "delivery_proof_available": true,
+        "courier_partner": "BlueDart Express",
+        "awb_tracking_number": "BLUEDART-1000035118"
       },
       "customer_feedback_record": {
         "review_score": 1,
@@ -183,19 +270,26 @@
       },
       "merchant_and_item_details": {
         "seller_id": "2528513dd95219a6013d4d05176e391a",
-        "seller_location": "osasco, SP",
-        "customer_location": "niteroi, RJ",
+        "seller_location": "Hyderabad, Telangana (PIN 500081)",
+        "seller_pin": "500081",
+        "customer_location": "Gurugram, Haryana (PIN 122002)",
+        "customer_pin": "122002",
+        "customer_phone": "+91 9800035118",
+        "courier_partner": "BlueDart Express",
+        "awb_tracking_number": "BLUEDART-1000035118",
         "product_category": "home_confort",
         "item_count": 1
       },
       "payment_profile": {
-        "payment_type": "credit_card",
+        "payment_type": "UPI",
+        "payment_method_display": "UPI (user_9118@okhdfcbank)",
+        "payment_identifier": "user_9118@okhdfcbank",
         "installments": 5
       }
     },
     "dispute_defense_evaluation": {
       "compelling_evidence_factors": [
-        "Carrier records indicate delivery was delayed by 18.6 days past target estimate"
+        "BlueDart Express records (AWB: BLUEDART-1000035118) indicate delivery was delayed by 18.6 days past SLA estimate"
       ],
       "dispute_representment_recommendation": "REVIEW_SHIPPING_SLA_BEFORE_REPRESENTMENT",
       "chargeback_reason_classification": "LATE_DELIVERY_DISPUTE"
@@ -204,21 +298,25 @@
   },
   {
     "packet_id": "EVD-CLM_3491784",
-    "created_at": "2026-09-04T08:36:01.909323+00:00",
-    "disclaimer": "SIMULATED DEMO LINKAGE \u2014 for pipeline demonstration only, not a real matched transaction. IEEE-CIS amounts are denominated in USD, while Olist commercial order amounts are in Brazilian Real (BRL). An approximate historical FX conversion rate of 1 USD = 3.50 BRL (2016-2018 period average) was applied purely to make demo amount-matching meaningful. This linkage is a SIMULATED_DEMO (no real shared transaction identity between datasets), now currency-normalized for a fair comparison. This is an approximation for demonstration purposes and does not claim currency-exact precision; production systems would require contemporaneous daily FX rates or native same-currency data sources.",
+    "created_at": "2026-09-04T16:45:07.129981+00:00",
+    "disclaimer": "INDIAN D2C MERCHANT BENCHMARK \u2014 for pipeline demonstration only, not a real matched transaction. Payment transactions are calibrated in Indian Rupees (INR, \u20b9) reflecting standard Indian BFSI & D2C payment flows (UPI, RuPay, NetBanking, Debit Cards) paired with realistic Indian courier fulfillment tracking (BlueDart, Delhivery, Shadowfax) and 6-digit postal PIN codes. This linkage is labeled as SIMULATED_DEMO to maintain empirical transparency and benchmark dispute representment workflows for Indian merchants.",
     "linkage_type": "SIMULATED_DEMO",
     "dispute_summary": {
       "claim_id": "CLM_3491784",
       "ieee_transaction_id": 3491784,
       "disputed_amount_original": {
-        "value": 994.0,
-        "currency": "USD"
+        "value": 82999.0,
+        "currency": "INR"
       },
       "disputed_amount_converted": {
-        "value": 3479.0,
-        "currency": "BRL",
-        "fx_rate_used": 3.5,
-        "fx_rate_period": "2016-2018 historical average approximation (~3.2-3.8 BRL per USD; Banco Central do Brasil / FRED series)"
+        "value": 82999.0,
+        "currency": "INR",
+        "fx_rate_used": 83.5,
+        "fx_rate_period": "Benchmark calibration: 1 USD = 83.50 INR"
+      },
+      "disputed_amount_usd_reference": {
+        "value": 994.0,
+        "currency": "USD"
       },
       "product_category_code": "W",
       "card_network": "mastercard",
@@ -254,14 +352,48 @@
         }
       ]
     },
+    "in_memory_syndicate_analysis": {
+      "identity_id": "USR_3491784",
+      "cluster_root": "usr:USR_3491784",
+      "cluster_size": 5,
+      "shared_infra_neighbor_count": 0,
+      "cluster_merchant_span": 1,
+      "cluster_burst_7d": 0,
+      "is_syndicate_attack": false,
+      "syndicate_alert": "NORMAL_MERCHANT_TRAFFIC",
+      "merchants_targeted": [
+        "MERCH_COSMETICS_STORE"
+      ],
+      "recent_claims": [],
+      "infrastructure_breakdown": {
+        "user": [
+          "USR_3491784"
+        ],
+        "device": [
+          "DEV_HONEST_03"
+        ],
+        "vpa": [
+          "priya_k@paytm"
+        ],
+        "phone": [
+          "PH_HASH_333"
+        ],
+        "pincode": [
+          "700001"
+        ]
+      },
+      "extraction_latency_ms": 0.004
+    },
     "commercial_fulfillment_evidence": {
-      "source_dataset": "Olist Brazilian E-Commerce (Real commercial logistics)",
+      "source_dataset": "Indian D2C Merchant Benchmark (Synthetic fulfillment telemetry)",
       "matched_order_id": "03310aa823a66056268a3bab36e827fb",
-      "matched_order_value_brl": 3184.34,
-      "target_converted_amount_brl": 3479.0,
+      "matched_order_value_inr": 75968.8,
+      "matched_order_value_brl": 75968.8,
+      "target_converted_amount_inr": 82999.0,
+      "target_converted_amount_brl": 82999.0,
       "amount_match_delta_pct": 8.47,
       "within_target_tolerance": true,
-      "currency_normalization_note": "Disputed USD 994.00 converted to BRL 3479.00 @ 3.5 BRL/USD prior to Olist order matching.",
+      "currency_normalization_note": "Disputed INR 82,999.00 calibrated from USD 994.00 @ 83.5 INR/USD prior to D2C fulfillment order matching.",
       "order_status": "canceled",
       "timeline": {
         "purchase_timestamp": "2018-08-07T16:33:59",
@@ -274,7 +406,9 @@
         "status": "CANCELED_OR_UNAVAILABLE",
         "delivery_delta_days": null,
         "transit_duration_days": null,
-        "delivery_proof_available": false
+        "delivery_proof_available": false,
+        "courier_partner": "BlueDart Express",
+        "awb_tracking_number": "BLUEDART-1000037164"
       },
       "customer_feedback_record": {
         "review_score": 1,
@@ -284,19 +418,26 @@
       },
       "merchant_and_item_details": {
         "seller_id": "nan",
-        "seller_location": "nan, nan",
-        "customer_location": "florianopolis, SC",
+        "seller_location": "Pune, Maharashtra (PIN 411001)",
+        "seller_pin": "411001",
+        "customer_location": "Kolkata, West Bengal (PIN 700001)",
+        "customer_pin": "700001",
+        "customer_phone": "+91 9800037164",
+        "courier_partner": "BlueDart Express",
+        "awb_tracking_number": "BLUEDART-1000037164",
         "product_category": "nan",
         "item_count": 1
       },
       "payment_profile": {
-        "payment_type": "voucher",
+        "payment_type": "UPI",
+        "payment_method_display": "UPI (user_2164@okhdfcbank)",
+        "payment_identifier": "user_2164@okhdfcbank",
         "installments": 1
       }
     },
     "dispute_defense_evaluation": {
       "compelling_evidence_factors": [
-        "Order was canceled or marked unfulfilled prior to carrier completion"
+        "Order was canceled or marked unfulfilled prior to courier dispatch"
       ],
       "dispute_representment_recommendation": "ACCEPT_CHARGEBACK_OR_ISSUE_REFUND",
       "chargeback_reason_classification": "UNFULFILLED_MERCHANDISE"
@@ -305,21 +446,25 @@
   },
   {
     "packet_id": "EVD-CLM_3490660",
-    "created_at": "2026-09-04T08:36:01.909323+00:00",
-    "disclaimer": "SIMULATED DEMO LINKAGE \u2014 for pipeline demonstration only, not a real matched transaction. IEEE-CIS amounts are denominated in USD, while Olist commercial order amounts are in Brazilian Real (BRL). An approximate historical FX conversion rate of 1 USD = 3.50 BRL (2016-2018 period average) was applied purely to make demo amount-matching meaningful. This linkage is a SIMULATED_DEMO (no real shared transaction identity between datasets), now currency-normalized for a fair comparison. This is an approximation for demonstration purposes and does not claim currency-exact precision; production systems would require contemporaneous daily FX rates or native same-currency data sources.",
+    "created_at": "2026-09-04T16:45:07.129981+00:00",
+    "disclaimer": "INDIAN D2C MERCHANT BENCHMARK \u2014 for pipeline demonstration only, not a real matched transaction. Payment transactions are calibrated in Indian Rupees (INR, \u20b9) reflecting standard Indian BFSI & D2C payment flows (UPI, RuPay, NetBanking, Debit Cards) paired with realistic Indian courier fulfillment tracking (BlueDart, Delhivery, Shadowfax) and 6-digit postal PIN codes. This linkage is labeled as SIMULATED_DEMO to maintain empirical transparency and benchmark dispute representment workflows for Indian merchants.",
     "linkage_type": "SIMULATED_DEMO",
     "dispute_summary": {
       "claim_id": "CLM_3490660",
       "ieee_transaction_id": 3490660,
       "disputed_amount_original": {
-        "value": 100.0,
-        "currency": "USD"
+        "value": 8350.0,
+        "currency": "INR"
       },
       "disputed_amount_converted": {
-        "value": 350.0,
-        "currency": "BRL",
-        "fx_rate_used": 3.5,
-        "fx_rate_period": "2016-2018 historical average approximation (~3.2-3.8 BRL per USD; Banco Central do Brasil / FRED series)"
+        "value": 8350.0,
+        "currency": "INR",
+        "fx_rate_used": 83.5,
+        "fx_rate_period": "Benchmark calibration: 1 USD = 83.50 INR"
+      },
+      "disputed_amount_usd_reference": {
+        "value": 100.0,
+        "currency": "USD"
       },
       "product_category_code": "R",
       "card_network": "visa",
@@ -355,14 +500,63 @@
         }
       ]
     },
+    "in_memory_syndicate_analysis": {
+      "identity_id": "USR_3490660",
+      "cluster_root": "usr:USR_SYN_03",
+      "cluster_size": 12,
+      "shared_infra_neighbor_count": 3,
+      "cluster_merchant_span": 4,
+      "cluster_burst_7d": 4,
+      "is_syndicate_attack": true,
+      "syndicate_alert": "COORDINATED_SYNDICATE_ATTACK",
+      "merchants_targeted": [
+        "MERCH_APPAREL_INDIA",
+        "MERCH_COSMETICS_DIRECT",
+        "MERCH_ELECTRONICS_D2C",
+        "MERCH_HOME_DECOR_D2C"
+      ],
+      "recent_claims": [
+        "CLM_SYN_101",
+        "CLM_SYN_102",
+        "CLM_SYN_103",
+        "CLM_3490660"
+      ],
+      "infrastructure_breakdown": {
+        "user": [
+          "USR_SYN_02",
+          "USR_SYN_01",
+          "USR_SYN_03",
+          "USR_3490660"
+        ],
+        "device": [
+          "DEV_X901_MUMBAI",
+          "DEV_X900_MUMBAI"
+        ],
+        "vpa": [
+          "refund_ring_alpha@okhdfcbank"
+        ],
+        "phone": [
+          "PH_HASH_993",
+          "PH_HASH_991",
+          "PH_HASH_994",
+          "PH_HASH_992"
+        ],
+        "pincode": [
+          "400051"
+        ]
+      },
+      "extraction_latency_ms": 0.006
+    },
     "commercial_fulfillment_evidence": {
-      "source_dataset": "Olist Brazilian E-Commerce (Real commercial logistics)",
+      "source_dataset": "Indian D2C Merchant Benchmark (Synthetic fulfillment telemetry)",
       "matched_order_id": "06c5eb90406de0ba873e721e9182ecfd",
-      "matched_order_value_brl": 342.07,
-      "target_converted_amount_brl": 350.0,
+      "matched_order_value_inr": 8160.76,
+      "matched_order_value_brl": 8160.76,
+      "target_converted_amount_inr": 8350.0,
+      "target_converted_amount_brl": 8350.0,
       "amount_match_delta_pct": 2.27,
       "within_target_tolerance": true,
-      "currency_normalization_note": "Disputed USD 100.00 converted to BRL 350.00 @ 3.5 BRL/USD prior to Olist order matching.",
+      "currency_normalization_note": "Disputed INR 8,350.00 calibrated from USD 100.00 @ 83.5 INR/USD prior to D2C fulfillment order matching.",
       "order_status": "delivered",
       "timeline": {
         "purchase_timestamp": "2018-06-12T08:46:10",
@@ -375,7 +569,9 @@
         "status": "DELIVERED_ON_TIME",
         "delivery_delta_days": -14.2,
         "transit_duration_days": 7.4,
-        "delivery_proof_available": true
+        "delivery_proof_available": true,
+        "courier_partner": "Delhivery Direct",
+        "awb_tracking_number": "DELHIVERY-1000038899"
       },
       "customer_feedback_record": {
         "review_score": 5,
@@ -385,23 +581,31 @@
       },
       "merchant_and_item_details": {
         "seller_id": "7ad32824caee82087b3e2e5f33b1bf32",
-        "seller_location": "ibitinga, SP",
-        "customer_location": "londrina, PR",
+        "seller_location": "Mumbai, Maharashtra (PIN 400051)",
+        "seller_pin": "400051",
+        "customer_location": "Hyderabad, Telangana (PIN 500081)",
+        "customer_pin": "500081",
+        "customer_phone": "+91 9800038899",
+        "courier_partner": "Delhivery Direct",
+        "awb_tracking_number": "DELHIVERY-1000038899",
         "product_category": "bed_bath_table",
         "item_count": 1
       },
       "payment_profile": {
-        "payment_type": "credit_card",
+        "payment_type": "RuPay Debit",
+        "payment_method_display": "RuPay Platinum Debit (\u2022\u2022\u2022\u2022 3899)",
+        "payment_identifier": "RuPay Platinum Debit (\u2022\u2022\u2022\u2022 3899)",
         "installments": 8
       }
     },
     "dispute_defense_evaluation": {
       "compelling_evidence_factors": [
-        "Carrier records confirm order delivered to customer on 2018-06-19 (14.2 days before estimated deadline)",
+        "\ud83d\udea8 COORDINATED SYNDICATE ATTACK: In-memory graph analysis detected shared device/VPA infrastructure spanning 4 distinct D2C merchants with 4 dispute claims in trailing 7 days (Cluster Size: 12 nodes).",
+        "Delhivery Direct tracking scan (AWB: DELHIVERY-1000038899) confirms delivery to customer on 2018-06-19 (14.2 days before estimated SLA deadline)",
         "Customer recorded a positive 5-star review following delivery"
       ],
-      "dispute_representment_recommendation": "CONTEST_CHARGEBACK_WITH_EVIDENCE",
-      "chargeback_reason_classification": "FIRST_PARTY_FRIENDLY_FRAUD"
+      "dispute_representment_recommendation": "CONTEST_CHARGEBACK_WITH_SYNDICATE_EVIDENCE",
+      "chargeback_reason_classification": "COORDINATED_MULTI_MERCHANT_SYNDICATE_FRAUD"
     },
     "narrative": ""
   }

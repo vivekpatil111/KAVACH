@@ -79,6 +79,7 @@ Every feature was engineered under strict causal constraints:
 | Metric | Measured Value | Random / Base Rate Benchmark | Relative Lift |
 | :--- | :---: | :---: | :---: |
 | **PR-AUC (Precision-Recall Area)** | **`0.4588`** | `0.0348` (3.48%) | **`13.2× Lift`** |
+| **Random Baseline PR-AUC** | **`0.0348`** | `0.0348` (3.48%) | Equal to fraud class rate in test set |
 | **ROC-AUC** | **`0.8752`** | `0.5000` (50.0%) | **`+0.3752`** |
 
 ### Candidate Threshold Operating Grid:

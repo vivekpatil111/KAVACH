@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-04T08:14:59.964139+00:00",
+  "generated_at": "2026-09-04T16:34:57.061070+00:00",
   "dataset": "IEEE-CIS Fraud Detection (Real anonymized Vesta/IEEE-CIS transactions)",
   "split_type": "Temporal (70% train, 15% validation, 15% test by TransactionDT)",
   "splits": {
