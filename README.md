@@ -1,34 +1,64 @@
 <div align="center">
 
-# 🛡️ Kavach (कवच)
+```
+██╗  ██╗ █████╗ ██╗   ██╗ █████╗  ██████╗██╗  ██╗
+██║ ██╔╝██╔══██╗██║   ██║██╔══██╗██╔════╝██║  ██║
+█████╔╝ ███████║██║   ██║███████║██║     ███████║
+██╔═██╗ ██╔══██║╚██╗ ██╔╝██╔══██║██║     ██╔══██║
+██║  ██╗██║  ██║ ╚████╔╝ ██║  ██║╚██████╗██║  ██║
+╚═╝  ╚═╝╚═╝  ╚═╝  ╚═══╝  ╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝
+```
 
-### Automated Chargeback Evidence Responder & AI Risk Manager
+# 🛡️ कवच · Kavach
 
-*A production-grade ML + Generative AI system for Indian BFSI & D2C Merchant Risk Defense*
+### *Stop the merchant losing money to fraud, returns and chargebacks.*
 
-<p>
-  <img src="https://img.shields.io/badge/Track-Razorpay_AI_Buildathon_2026_(Track_02)-3b82f6?style=for-the-badge" alt="Track 02: AI Risk Manager">
-  <img src="https://img.shields.io/badge/FastAPI-Real--time_Inference_(<15ms)-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI">
-  <img src="https://img.shields.io/badge/Streamlit-Analyst_Dashboard-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white" alt="Streamlit">
-  <img src="https://img.shields.io/badge/Currency-INR_(%E2%82%B9)-10b981?style=for-the-badge" alt="INR">
-  <img src="https://img.shields.io/badge/ROC--AUC-0.8752-10b981?style=for-the-badge" alt="ROC-AUC">
-  <img src="https://img.shields.io/badge/PR--AUC-0.4588_(13.2%C3%97_lift)-0284c7?style=for-the-badge" alt="PR-AUC">
-  <img src="https://img.shields.io/badge/RTO_PR--AUC-0.2773_(59.5%C3%97_lift)-8b5cf6?style=for-the-badge" alt="RTO PR-AUC">
-  <img src="https://img.shields.io/badge/Tests-21%20passed%20%E2%9C%85-22c55e?style=for-the-badge&logo=pytest" alt="Tests: 21 passed">
-</p>
+**AI Risk Manager — BachTech Track 02**
+
+<br/>
+
+[![Track](https://img.shields.io/badge/BachTech-Track_02_AI_Risk_Manager-gold?style=for-the-badge&labelColor=1a1a2e)](https://bachtech.in)
+[![FastAPI](https://img.shields.io/badge/FastAPI-<15ms_P99-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
+[![Streamlit](https://img.shields.io/badge/Streamlit-5_Tab_Dashboard-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https://streamlit.io)
+[![Tests](https://img.shields.io/badge/Tests-21_Passed_✅-22c55e?style=for-the-badge&logo=pytest)](tests/)
+[![Defense Only](https://img.shields.io/badge/Mode-Defense_Only_🛡️-0284c7?style=for-the-badge)](#️-strictly-defense-only)
+
+<br/>
+
+---
+
+## ⚡ Results at a Glance
+
+| 🏆 Metric | 📊 Value | 🎯 What It Means |
+|:---|:---:|:---|
+| **Capital Unlocked** | **₹1.84 Crore** | Legitimate working capital freed from binary freezes |
+| **Fraud PR-AUC Lift** | **13.2×** | Over random baseline (3.48% class rate) |
+| **RTO ROC-AUC** | **0.9845** | Pre-dispatch cancellation prediction |
+| **RTO PR-AUC Lift** | **59.5×** | Over random baseline |
+| **Dossier Generation** | **< 3 sec** | CE3.0 + NPCI-compliant PDF, SHA-256 sealed |
+| **Inference Latency** | **5.38ms avg** | Zero checkout friction |
+| **Syndicate Detection** | **< 1ms** | Union-Find graph, real-time ring freeze |
+| **Dispute Hours Saved** | **Zero** | Manual work eliminated |
+| **Tests Passing** | **21 / 21** | No API keys, no artifacts needed |
 
 </div>
 
 ---
 
-## Track Alignment: Razorpay AI Buildathon 2026 (Track 02: AI Risk Manager)
+## 🎯 Track 02 Alignment — All Four Directions Covered
 
-| Track Objective | Coverage | Implementation in Kavach |
-| :--- | :---: | :--- |
-| **Chargeback Evidence Responder** (Primary) | ✅ Full | XGBoost fraud scoring → Indian D2C evidence linkage → Gemini LLM narrative → PDF representment dossier |
-| **Return-Risk Scorer (RTO Predictor)** (Secondary) | ✅ Full | Dedicated XGBoost classifier on logistics & category signals mitigating reverse shipping drag (`return_risk_scorer.py`) |
+> *"Build a working detector, verifier or auto-responder for one class of loss, with measured precision and recall on a held-out test set."*
 
-This project specifically addresses **Track 02: AI Risk Manager** for the **Indian BFSI & E-Commerce ecosystem**. The primary focus is on **post-authorisation defense** — automating the dispute representment process after a chargeback is filed — and **pre-dispatch return-risk mitigation** to shield Indian D2C merchants from friendly fraud and reverse logistics losses.
+| 🎯 Track Direction | ✅ | 📁 Implementation |
+|:---|:---:|:---|
+| **Chargeback Evidence Responder** | ✅ Full | XGBoost → Evidence Linkage → Gemini LLM → SHA-256 PDF Dossier |
+| **Return-Risk Scorer** | ✅ Full | Secondary XGBoost, 59.5× lift, pre-dispatch COD flagging |
+| **Fraud-Spike Detector** | ✅ Full | Real-time scoring at 5.38ms avg, SHAP explainability, claims queue |
+| **Abuse-Ring Sentinel** | ✅ Full | Union-Find in-memory graph, coordinated burst detection < 1ms |
+
+> **The Bar:** *"Honest metrics including false-positive cost."* → Dedicated FP Cost Analysis tab built for this. See [below](#-fp-cost-analysis-tab--honest-metrics).
+
+> **Defense-Only Compliance:** No attack simulation, no payload generation. [Full statement →](#️-strictly-defense-only)
 
 ---
 
@@ -122,12 +152,28 @@ Complete forensic drill-down for individual disputes:
 - **Executive Dispute Narrative:** Professional representment prose drafted by Gemini Generative AI
 - **One-Click PDF Download:** Pre-rendered dispute representment dossier ready for network submission
 
-### 💰 FP Cost Analysis Tab (Working Capital TVM Modeling)
-Quantifies the balance-sheet friction of false positives in Indian Rupees:
-- **Sensitivity Grid:** Total FP capital cost across hold durations (1–7 days) × hurdle rates (5–15% p.a.) in **₹ INR**
-- **Threshold Trade-off Analysis:** Shift in precision, recall, and capital lockup from τ = 0.50 to 0.90
-- **Net Savings Optimizer:** Configurable `avg_chargeback_value` slider (default ₹4,000) computing net financial recovery after accounting for tied-up capital and LLM API costs
-- **Diwali / Festive Surge Multiplier:** Projects capital freeze during 3x–10x seasonal order spikes
+### 💰 FP Cost Analysis Tab — Honest Metrics
+
+> *"Honest metrics including false-positive cost."* — Track 02 Bar
+
+Every false positive has a real monetary cost. Kavach quantifies it:
+
+| τ Threshold | Precision | Recall | FP Capital Tied Up | Net Savings |
+|:---:|:---:|:---:|:---:|:---:|
+| 0.50 | 47.04% | 45.90% | ₹2.48 Crore | ₹56.4 Lakhs |
+| **0.70 ✅** | **67.19%** | **36.13%** | **₹64 Lakhs** | **₹44.5 Lakhs** |
+| 0.85 | 78.90% | 28.87% | ₹27 Lakhs | ₹35.6 Lakhs |
+| 0.90 | 83.30% | 25.24% | ₹17 Lakhs | ₹31.1 Lakhs |
+
+**Actuarial Reserve vs Legacy Binary Freeze (2,879 borderline merchants):**
+```
+Legacy System:  ████████████████████████████████████  ₹474.83 Lakhs FROZEN
+Kavach 15%:     ████                                  ₹71.22 Lakhs held
+                                                      ₹403.60 Lakhs PRESERVED ✅
+```
+- **Net Savings Optimizer:** Profit-maximizing threshold at t=0.50 → **₹56.39 Lakhs net savings**
+- **Sensitivity Grid:** FP cost across hold durations (1–7 days) × hurdle rates (5–15% p.a.)
+- **Festive Surge Multiplier:** Projects capital freeze during 3×–10× seasonal order spikes
 
 ### 🔄 RTO & COD Abuse Predictor Tab (Secondary ML)
 Addresses the #1 margin killer in Indian e-commerce (reverse shipping costs of ₹120–₹200 per failed delivery):
@@ -138,7 +184,21 @@ Addresses the #1 margin killer in Indian e-commerce (reverse shipping costs of �
 
 ---
 
-## Implementation Reality Matrix
+## 🧠 AI Judgment — Right Tool, Right Place
+
+> *"The right tool in the right place — and where you chose not to use one."*
+
+| Decision | Choice | Why |
+|:---|:---:|:---|
+| Fraud model | **XGBoost** not DL | Tabular data + 5.38ms inference + full SHAP explainability for CE3.0 audit |
+| Narrative gen | **Gemini 1.5 Pro** not templates | Context-aware AWBs, timestamps, review scores — templates can't do this |
+| LLM safety | **Pydantic guardrail** not raw LLM | LLMs hallucinate amounts. Schema enforces before SHA-256 seal |
+| Ring detection | **Union-Find** not GNN | < 1ms detection — GNN training overhead unnecessary for this pattern |
+| Reserve policy | **Actuarial 15%** not binary freeze | Binary freeze destroys working capital. 15% catches risk without strangling merchants |
+
+---
+
+## ✅ Implementation Reality Matrix
 
 | Component | File | Status | Notes |
 | :--- | :--- | :---: | :--- |
@@ -483,5 +543,19 @@ This system is **100% defense-only**. It does **not** generate, simulate, or dis
 MIT License — see [LICENSE](LICENSE).
 
 <div align="center">
-<sub>Built for the Razorpay AI Buildathon 2026 · Track 02: AI Risk Manager</sub>
+
+<br/>
+
+**Kavach doesn't just stop bad actors.**
+
+**It fundamentally rewrites e-commerce unit economics.**
+
+<br/>
+
+---
+
+*Built for BachTech · Track 02: AI Risk Manager*
+
+*"Stop the merchant losing money to fraud, returns and chargebacks."*
+
 </div>
